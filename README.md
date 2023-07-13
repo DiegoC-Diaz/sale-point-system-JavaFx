@@ -34,7 +34,7 @@ jpackage ^
   --vendor "DIEGO" ^
   --icon install/assets/ico.ico ^
   --dest install/output ^
-  --app-version 1.0 \
+  --app-version 1.0 ^
   --runtime-image install/windows/jdk20+fx ^
   --resource-dir install/windows/resources ^
   --win-shortcut ^
