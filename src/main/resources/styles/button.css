@@ -13,24 +13,27 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to ed
 
 
 .button:hover{
-    -fx-background-color: BDC6A9, BDC6A9, BDC6A9, BDC6A9;
+    -fx-background-color: #BDC6A9, #BDC6A9, #BDC6A9, #BDC6A9;
     -fx-background-insets: 0 0 -1 0, 0, 1, 2;
     -fx-background-radius: 3px, 3px, 2px, 1px;
     -fx-padding: 0.333333em 0.666667em 0.333333em 0.666667em; /* 4 8 4 8 */
     -fx-text-fill: -fx-text-base-color;
     -fx-alignment: CENTER;
+    -fx-cursor: hand;
     -fx-content-display: LEFT;
-}
+}   
 
 .button2 {
-    -fx-background-color: red
+    -fx-background-color: #7e9169
 }
-.button2Hover:hover{
-    -fx-background-color: 2F39CF, 2F39CF,2F39CF,s;
+
+#button2:hover{
+    -fx-background-color:  #3A5A40,  #3A5A40, #3A5A40;
     -fx-background-insets: 0 0 -1 0, 0, 1, 2;
     -fx-background-radius: 3px, 3px, 2px, 1px;
+    
     -fx-padding: 0.333333em 0.666667em 0.333333em 0.666667em; /* 4 8 4 8 */
-    -fx-text-fill: -fx-text-base-color;
+    -fx-text-fill: white;
     -fx-alignment: CENTER;
     -fx-content-display: LEFT;
 }

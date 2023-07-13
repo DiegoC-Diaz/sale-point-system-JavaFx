@@ -18,7 +18,7 @@
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="572.0" prefWidth="959.0" style="-fx-background-color: a3b18a;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.sale_point.buscadorProducto">
    <children>
       <TextField fx:id="barra_busqueda" layoutX="42.0" layoutY="35.0" onKeyReleased="#searchItem" prefHeight="50.0" prefWidth="649.0" AnchorPane.leftAnchor="42.0" AnchorPane.rightAnchor="268.0" />
-      <Button fx:id="buscar_btn" layoutX="712.0" layoutY="35.0" mnemonicParsing="false" onAction="#buscar_btn_pressed" prefHeight="50.0" prefWidth="123.0" style="-fx-background-color: dad7cd;" text="buscar" AnchorPane.rightAnchor="123.79999999999995">
+      <Button id="button2" fx:id="buscar_btn" layoutX="712.0" layoutY="35.0" mnemonicParsing="false" onAction="#buscar_btn_pressed" prefHeight="50.0" prefWidth="123.0" styleClass="button2" stylesheets="@../../../styles/button.css" text="buscar" AnchorPane.rightAnchor="123.79999999999995">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></Button>
@@ -35,16 +35,16 @@
       <RadioButton layoutX="74.0" layoutY="105.0" mnemonicParsing="false" text="Filters" visible="false" AnchorPane.leftAnchor="74.0" AnchorPane.rightAnchor="730.4" />
       <VBox layoutX="716.0" layoutY="136.0" prefHeight="309.0" prefWidth="123.0" spacing="20.0" AnchorPane.bottomAnchor="127.0" AnchorPane.rightAnchor="120.0" AnchorPane.topAnchor="136.0">
          <children>
-            <Button fx:id="editar_btn" disable="true" mnemonicParsing="false" onAction="#abrir_form" prefHeight="59.0" prefWidth="114.0" stylesheets="@../../../styles/button.css" text="Editar">
+            <Button id="button2" fx:id="editar_btn" disable="true" mnemonicParsing="false" onAction="#abrir_form" prefHeight="59.0" prefWidth="114.0" styleClass="button2" stylesheets="@../../../styles/button.css" text="Editar">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor></Button>
-            <Button fx:id="agregar_btn" disable="true" mnemonicParsing="false" onAction="#agregar_producto" prefHeight="68.0" prefWidth="119.0" stylesheets="@../../../styles/button.css" text="Agregar">
+            <Button id="button2" fx:id="agregar_btn" disable="true" mnemonicParsing="false" onAction="#agregar_producto" prefHeight="68.0" prefWidth="119.0" styleClass="button2" stylesheets="@../../../styles/button.css" text="Agregar">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor></Button>
-            <Button fx:id="cambiar_estado" disable="true" mnemonicParsing="false" onAction="#cambiar_estado" prefHeight="63.0" prefWidth="126.0" stylesheets="@../../../styles/button.css" text="Estado" />
-            <Button layoutX="10.0" layoutY="69.0" mnemonicParsing="false" onAction="#abrir_form" prefHeight="68.0" prefWidth="126.0" stylesheets="@../../../styles/button.css" text="Crear Producto">
+            <Button id="button2" fx:id="cambiar_estado" disable="true" mnemonicParsing="false" onAction="#cambiar_estado" prefHeight="63.0" prefWidth="126.0" styleClass="button2" stylesheets="@../../../styles/button.css" text="Estado" />
+            <Button id="button2" layoutX="10.0" layoutY="69.0" mnemonicParsing="false" onAction="#abrir_form" prefHeight="68.0" prefWidth="126.0" styleClass="button2" stylesheets="@../../../styles/button.css" text="Crear Producto">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor></Button>

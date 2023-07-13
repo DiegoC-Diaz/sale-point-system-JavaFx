@@ -11,7 +11,7 @@
 
 <BorderPane xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.sale_point.utilidadController">
    <center>
-      <AnchorPane fx:id="panelPrincipal" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: a3b18a;" BorderPane.alignment="CENTER">
+      <AnchorPane fx:id="panelPrincipal" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: a3b18a;" stylesheets="@../../../styles/button.css" BorderPane.alignment="CENTER">
          <BorderPane.margin>
             <Insets />
          </BorderPane.margin>
@@ -37,17 +37,17 @@
          <children>
             <VBox layoutX="10.0" layoutY="13.0" prefHeight="675.0" prefWidth="178.0" spacing="20.0">
                <children>
-                  <Button mnemonicParsing="false" onAction="#mostrar_ventas" prefHeight="102.0" prefWidth="186.0" style="-fx-background-color: a3b18a; -fx-border-radius: 10;" text="Ventas">
+                  <Button mnemonicParsing="false" onAction="#mostrar_ventas" prefHeight="102.0" prefWidth="186.0" stylesheets="@../../../styles/button.css" text="Ventas">
                      <font>
                         <Font size="20.0" />
                      </font>
                   </Button>
-                  <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#agergar_editar_producto" prefHeight="102.0" prefWidth="186.0" style="-fx-background-color: a3b18a; -fx-border-radius: 10;" text="Agregar/Editar">
+                  <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#agergar_editar_producto" prefHeight="102.0" prefWidth="186.0" stylesheets="@../../../styles/button.css" text="Agregar/Editar">
                      <font>
                         <Font size="20.0" />
                      </font>
                   </Button>
-                  <Button layoutX="10.0" layoutY="132.0" mnemonicParsing="false" onAction="#ir_facturar" prefHeight="102.0" prefWidth="186.0" style="-fx-background-color: a3b18a; -fx-border-radius: 10;" text="Ir a Facturar">
+                  <Button layoutX="10.0" layoutY="132.0" mnemonicParsing="false" onAction="#ir_facturar" prefHeight="102.0" prefWidth="186.0" stylesheets="@../../../styles/button.css" text="Ir a Facturar">
                      <font>
                         <Font size="20.0" />
                      </font>
