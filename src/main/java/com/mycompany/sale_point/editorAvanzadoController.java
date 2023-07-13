@@ -49,8 +49,11 @@ import servicios.producto;
  *
  * @author Diego Carcamo
  */
+enum Modos {
+    CREAR, EDITAR
+}
 
-public class buscadorProducto implements Initializable, producto {
+public class editorAvanzadoController implements Initializable, producto {
 
     @FXML
     private TextField barra_busqueda;

@@ -81,7 +81,7 @@ public class utilidadController implements Initializable {
         //Reutilizamos el componente agregar o quitar productos ya que este ya posee una barra de busqueda
         //ademas de poseer varias utilidades lo que nos permite ahorrar mucho codigo y ademas 
         try {
-            buscadorProducto NewOptController = cargarEscena("buscadorProducto.gui.fxml").<buscadorProducto>getController();
+            editorAvanzadoController NewOptController = cargarEscena("editorAvanzado.gui.fxml").<editorAvanzadoController>getController();
             NewOptController.mostrarBotones(false);//false 
             NewOptController.setDatabase(database);
 
