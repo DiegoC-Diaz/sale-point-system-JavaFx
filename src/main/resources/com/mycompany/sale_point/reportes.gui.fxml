@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane id="AnchorPane" prefHeight="555.0" prefWidth="866.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.sale_point.reporteController">
+   <children>
+      <VBox layoutX="234.0" layoutY="29.0" prefHeight="26.0" prefWidth="221.0">
+         <children>
+            <ComboBox fx:id="year_picker" prefWidth="150.0" />
+            <DatePicker fx:id="month_picker" visible="false" />
+         </children>
+      </VBox>
+      <Label layoutX="192.0" layoutY="33.0" prefHeight="18.0" prefWidth="41.0" text="Year" />
+      <ComboBox fx:id="modo" layoutX="14.0" layoutY="30.0" prefWidth="150.0" />
+      <Label layoutX="14.0" layoutY="14.0" text="Seleccionar por:" />
+      <BarChart layoutX="37.0" layoutY="101.0" prefHeight="400.0" prefWidth="633.0">
+        <xAxis>
+          <CategoryAxis side="BOTTOM" />
+        </xAxis>
+        <yAxis>
+          <NumberAxis side="LEFT" />
+        </yAxis>
+      </BarChart>
+   </children>
+</AnchorPane>

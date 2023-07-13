@@ -1,0 +1,17 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Jun 9, 2023, 5:09:44 PM
+    Author     : Diego Carcamo
+*/
+
+.table-view .table-cell{
+    -fx-font-weight:bold;
+    -fx-font-size:15px;           
+    /* -fx-text-fill:orange; */
+
+}
+
+

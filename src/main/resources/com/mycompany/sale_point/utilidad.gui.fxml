@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.sale_point.utilidadController">
+   <center>
+      <AnchorPane fx:id="panelPrincipal" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: a3b18a;" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
+         <children>
+            <TextField editable="false" layoutX="22.0" layoutY="32.0" prefHeight="66.0" prefWidth="324.0" style="-fx-background-color: dad7cd;">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </TextField>
+            <Label layoutX="357.0" layoutY="43.0" text="Total">
+               <font>
+                  <Font size="30.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+   </center>
+   <right>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #3A5A40;" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets left="1.0" />
+         </BorderPane.margin>
+         <children>
+            <VBox layoutX="10.0" layoutY="13.0" prefHeight="675.0" prefWidth="178.0" spacing="20.0">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#mostrar_ventas" prefHeight="102.0" prefWidth="186.0" style="-fx-background-color: a3b18a; -fx-border-radius: 10;" text="Ventas">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Button>
+                  <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#agergar_editar_producto" prefHeight="102.0" prefWidth="186.0" style="-fx-background-color: a3b18a; -fx-border-radius: 10;" text="Agregar/Editar">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Button>
+                  <Button layoutX="10.0" layoutY="132.0" mnemonicParsing="false" onAction="#ir_facturar" prefHeight="102.0" prefWidth="186.0" style="-fx-background-color: a3b18a; -fx-border-radius: 10;" text="Ir a Facturar">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Button>
+               </children>
+            </VBox>
+         </children>
+      </AnchorPane>
+   </right>
+</BorderPane>
