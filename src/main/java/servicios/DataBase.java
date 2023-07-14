@@ -39,9 +39,9 @@ public class DataBase {
         Database = "tiendas_bethel";
         Port =  "3306";
      */
-    public DataBase() {
+    public DataBase() throws SQLException {
         // Password =  System.getenv("PASSWORD");
-        Host = "localhost";
+        Host = "localhostly";
         User = System.getenv("USER");
         Password = System.getenv("PASSWORD");
         Database = System.getenv("DATABASE");
@@ -49,14 +49,10 @@ public class DataBase {
         //jdbc:mysql://localhost:3306/sonoo
         String link = "jdbc:mysql://" + Host + ":" + Port + "/" + Database;
 
-        try {
-
+   
             con = DriverManager.getConnection(link, User, Password);
             System.out.println(link);
-        } catch (SQLException ex) {
-            Logger.getLogger(DataBase.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
+      
     }
 
     public Connection getCon() {
