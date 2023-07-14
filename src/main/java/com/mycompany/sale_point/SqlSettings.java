@@ -144,7 +144,9 @@ public class SqlSettings implements Initializable {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("No se pudo conectar con el servidor de MySQL");
             alert.setHeaderText("Error de conexion");
+        
             alert.setContentText("Mensaje:" + ex.getMessage());
+            
 
             alert.show();
 

@@ -41,11 +41,12 @@ public class DataBase {
      */
     public DataBase() throws SQLException {
         // Password =  System.getenv("PASSWORD");
-        Host = "localhostly";
+       /* Host = "localhostly";
         User = System.getenv("USER");
         Password = System.getenv("PASSWORD");
         Database = System.getenv("DATABASE");
         Port = System.getenv("PORT");
+*/
         //jdbc:mysql://localhost:3306/sonoo
         String link = "jdbc:mysql://" + Host + ":" + Port + "/" + Database;
 
@@ -58,13 +59,13 @@ public class DataBase {
     }
        public DataBase(String Host,String User,String Password,String Database,String Port) throws SQLException {
         // Password =  System.getenv("PASSWORD");
-        this.Host = Host;
-        this.User = User;
-        this.Password = Password;
-        this.Database = Database;
-        this.Port = Port;
-        //jdbc:mysql://localhost:3306/sonoo
-        String link = "jdbc:mysql://" + Host + ":" + Port + "/" + Database;
+        this.Host = "localhost";//Host;
+        this.User = "vendedor";//User;
+        this.Password ="5775_h6456" ;//Password;
+        this.Database ="";// Database;
+        this.Port = "3306";//Port;
+        //jdbc:mysql://localhost:3306/sotiendas_bethelnoo
+        String link = "jdbc:mysql://" + Host + ":" + Port + "/" + Database+"?useSSL=false&allowPublicKeyRetrieval=true";
 
    
          con = DriverManager.getConnection(link, User, Password);
