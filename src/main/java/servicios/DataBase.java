@@ -52,9 +52,27 @@ public class DataBase {
    
             con = DriverManager.getConnection(link, User, Password);
             System.out.println(link);
+            
+        
       
     }
+       public DataBase(String Host,String User,String Password,String Database,String Port) throws SQLException {
+        // Password =  System.getenv("PASSWORD");
+        this.Host = Host;
+        this.User = User;
+        this.Password = Password;
+        this.Database = Database;
+        this.Port = Port;
+        //jdbc:mysql://localhost:3306/sonoo
+        String link = "jdbc:mysql://" + Host + ":" + Port + "/" + Database;
 
+   
+         con = DriverManager.getConnection(link, User, Password);
+         System.out.println(link);
+            
+        
+      
+    }
     public Connection getCon() {
         return con;
 
@@ -104,6 +122,7 @@ public class DataBase {
         } catch (SQLException ex) {
             Logger.getLogger(producto.class.getName()).log(Level.SEVERE, null, ex);
             ex.printStackTrace();
+            
             System.out.println("NO SE PUEDE");
         }
 

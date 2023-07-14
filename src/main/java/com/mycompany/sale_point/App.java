@@ -15,6 +15,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DialogPane;
 import javafx.stage.Screen;
+import servicios.SqlCredentials;
 
 /**
  * JavaFX App
@@ -33,7 +34,12 @@ public class App extends Application {
         
 
         try {
-            mysql = new DataBase();
+             SqlCredentials credentials = new SqlCredentials("","","","","");
+            credentials.readCredentialsFromFile("credentials.txt");
+            
+            mysql = new DataBase(credentials.getHost(),
+            credentials.getUser(),credentials.getPassword(),credentials.getDatabase(),
+            credentials.getPort());
 
             create(stage, "venta.gui.fxml");
         } catch (Exception e) {
