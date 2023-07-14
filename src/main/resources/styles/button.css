@@ -27,7 +27,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to ed
     -fx-background-color: #7e9169
 }
 
-#button2:hover{
+.button2:hover{
     -fx-background-color:  #3A5A40,  #3A5A40, #3A5A40;
     -fx-background-insets: 0 0 -1 0, 0, 1, 2;
     -fx-background-radius: 3px, 3px, 2px, 1px;
@@ -36,4 +36,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to ed
     -fx-text-fill: white;
     -fx-alignment: CENTER;
     -fx-content-display: LEFT;
+}
+
+.button2:hover>.path-class {
+    -fx-fill: white; /* Default fill color */
 }

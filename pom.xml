@@ -14,7 +14,13 @@
     </properties>
     <dependencies>
   
-    
+        <dependency>
+            <groupId>com.sample</groupId>
+            <artifactId>sample</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>C:\Users\Diego Carcamo\Documents\netbeans-0.1.1\sale_point\charm-glisten-6.1.0-javadoc.jar</systemPath>
+        </dependency>
         <!-- https://mvnrepository.com/artifact/com.mysql/mysql-connector-j -->
         <dependency>
             <groupId>com.mysql</groupId>
@@ -41,6 +47,8 @@
           
             <version>20.0.1</version>
         </dependency>
+       
+
 
  
     </dependencies>
@@ -48,6 +56,27 @@
 
     <build>
         <plugins>
+            
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-install-plugin</artifactId>
+                <version>3.0.0-M1</version>
+                <executions>
+                    <execution>
+                        <id>install-local-jar</id>
+                        <goals>
+                            <goal>install-file</goal>
+                        </goals>
+                        <configuration>
+                            <file>charm-glisten-6.1.0-javadoc-sd</file>
+                            <groupId>com.charm</groupId>
+                            <artifactId>local-jar</artifactId>
+                            <version>1.0</version>
+                            <packaging>jar</packaging>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>

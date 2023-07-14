@@ -42,6 +42,7 @@ import javafx.util.Callback;
 import models.productModel;
 
 import servicios.DataBase;
+import servicios.Wait;
 import servicios.producto;
 
 /**
@@ -49,7 +50,6 @@ import servicios.producto;
  *
  * @author Diego Carcamo
  */
-
 public class buscadorProducto implements Initializable, producto {
 
     @FXML
@@ -93,11 +93,21 @@ public class buscadorProducto implements Initializable, producto {
      */
     private DataBase database;
     private ObservableList<productModel> listaProductos;
+    Thread hiloBusqueda;
+    Wait espera;
+    Runnable run;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
         modoActual = Modos.CREAR;
+        //Esta no es la implementacion mas apropiada pues
+        //java Fx cuenta con su propio metodo de concurrencia
+        espera = new Wait(1, this);
+        hiloBusqueda = new Thread(espera);
+
+        //Este perimitir realizar debouncing osea limitar la accion de
+        //del usuario y tener mejor control del evento de busqueda.
         //Si hay almenos un elemnto seleccionado en la lista permiitiremos al usuario la opcion de editar
         tableview.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
@@ -146,6 +156,20 @@ public class buscadorProducto implements Initializable, producto {
 
     }
 
+    public void busquedaAutomatica() {
+        ResultSet rs = producto.buscar_productos(database, barra_busqueda.getText());
+        try {
+            if (rs != null) {
+                System.out.println("Building Our Table");
+                buildTable(rs, "");
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            System.out.println("SQL Error in buscar btn_pressed");
+        }
+    }
+
     @FXML
     private void buscar_btn_pressed(ActionEvent event) {
 
@@ -166,9 +190,6 @@ public class buscadorProducto implements Initializable, producto {
     private void crearProducto() {
 
     }
-
-
-    
 
     public void mostrarBotones(boolean bool) {
         //Se esoncde el boton de agregar
@@ -245,8 +266,12 @@ public class buscadorProducto implements Initializable, producto {
 
     @FXML
     void searchItem() throws SQLException {
-        //Las busquedas se haran mediante paginacion 
-
+        espera.increment();
+        if (!hiloBusqueda.isAlive()) {
+            espera.reset();
+            hiloBusqueda = new Thread(espera);
+            hiloBusqueda.start();
+        }
     }
 
     @FXML
@@ -307,7 +332,7 @@ public class buscadorProducto implements Initializable, producto {
          y no la ruta. Ya que  lo que queremos es que varias computadoas
          puedan trabajr con el mismo set de imagenes.*/
 
-        /*ProductoData es el objeto que conteine la informacion
+ /*ProductoData es el objeto que conteine la informacion
             para actualizacion e insercion den Mysql
          */
         productModel productoData = new productModel("", nombre, descripcion, precio, descuento, 0, estado, tipo);
