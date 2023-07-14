@@ -125,7 +125,7 @@ public class facturaController implements Initializable, formatos, factura {
         facturaCliente.setApellido(apellidos_form.getText());
         crearLista();
 
-        //factura.crearFactura(database, facturaCliente, facturaCliente.getProductos());
+        factura.crearFactura(database, facturaCliente, facturaCliente.getProductos());
         imprimir.pageSetup(textArea, (Stage) facturaFx.getScene().getWindow());
 
     }
