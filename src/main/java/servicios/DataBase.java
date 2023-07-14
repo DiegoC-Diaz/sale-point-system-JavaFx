@@ -59,15 +59,13 @@ public class DataBase {
     }
        public DataBase(String Host,String User,String Password,String Database,String Port) throws SQLException {
         // Password =  System.getenv("PASSWORD");
-        this.Host = "localhost";//Host;
-        this.User = "vendedor";//User;
-        this.Password ="5775_h6456" ;//Password;
-        this.Database ="";// Database;
-        this.Port = "3306";//Port;
+        this.Host = Host;
+        this.User = User;
+        this.Password =Password;
+        this.Database =Database;
+        this.Port = Port;
         //jdbc:mysql://localhost:3306/sotiendas_bethelnoo
         String link = "jdbc:mysql://" + Host + ":" + Port + "/" + Database+"?useSSL=false&allowPublicKeyRetrieval=true";
-
-   
          con = DriverManager.getConnection(link, User, Password);
          System.out.println(link);
             
