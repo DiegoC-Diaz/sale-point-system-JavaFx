@@ -14,13 +14,7 @@
     </properties>
     <dependencies>
   
-        <dependency>
-            <groupId>com.sample</groupId>
-            <artifactId>sample</artifactId>
-            <version>1.0</version>
-            <scope>system</scope>
-            <systemPath>C:\Users\Diego Carcamo\Documents\netbeans-0.1.1\sale_point\charm-glisten-6.1.0-javadoc.jar</systemPath>
-        </dependency>
+       
         <!-- https://mvnrepository.com/artifact/com.mysql/mysql-connector-j -->
         <dependency>
             <groupId>com.mysql</groupId>

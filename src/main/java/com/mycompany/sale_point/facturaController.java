@@ -8,6 +8,8 @@ import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -64,14 +66,27 @@ public class facturaController implements Initializable, formatos, factura {
 
     void crearFactura(ObservableList<productModel> productos) {
         facturaCliente = new facturaModel(nombres_form.getText(),
-       "", apellidos_form.getText(), "", productos);
+                "", apellidos_form.getText(), "", productos);
 
         crearLista();
     }
 
     void crearLista() {
-        datosFactura.add("Productos" + "\t" + "Subtotales");
+        datosFactura.clear();
         double total = 0, subtotal = 0;
+        datosFactura.add("\t" + "ESTA NO ES UNA FACTURA SOLO UN COMPROBANTE");
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+        datosFactura.add("Fecha:\t" + now.format(formatter));
+
+        if (nombres_form.getText().length() > 0 && apellidos_form.getText().length() > 0) {
+            datosFactura.add("Consumidor:\t" + nombres_form.getText() + " " + apellidos_form.getText());
+        } else {
+            datosFactura.add("Consumidor:\t" + "CF");
+        }
+
+        datosFactura.add("Productos" + "\t" + "Subtotales");
 
         for (productModel pm : facturaCliente.getProductos()) {
 
@@ -108,9 +123,9 @@ public class facturaController implements Initializable, formatos, factura {
 
         facturaCliente.setNombre(nombres_form.getText());
         facturaCliente.setApellido(apellidos_form.getText());
-        
-        factura.crearFactura(database, facturaCliente,facturaCliente.getProductos());
+        crearLista();
 
+        //factura.crearFactura(database, facturaCliente, facturaCliente.getProductos());
         imprimir.pageSetup(textArea, (Stage) facturaFx.getScene().getWindow());
 
     }

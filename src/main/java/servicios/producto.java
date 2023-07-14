@@ -80,8 +80,8 @@ public interface producto {
             CallableStatement stm = database.getCon().prepareCall("{CALL cambiar_estado_p (?,?)}");
             stm.setString(1,productoUUID);
             stm.setBoolean(2, estado);
-             stm.execute();
-             System.out.println("Se modifico el estado del producto exitosamente");
+            stm.execute();
+            System.out.println("Se modifico el estado del producto exitosamente");
            
 
         } catch (SQLException ex) {

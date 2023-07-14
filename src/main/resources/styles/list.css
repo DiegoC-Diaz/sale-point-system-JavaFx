@@ -1,0 +1,20 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Jul 14, 2023, 1:02:54 PM
+    Author     : Diego Carcamo
+*/
+
+.list-view, .split-pane { -fx-background-insets: 0; -fx-padding: 0; 
+-fx-background-color:white; }
+
+.list-view .list-cell:even {
+-fx-background-color: white;
+-fx-text-fill: black;
+}
+.list-view .list-cell:odd {
+-fx-background-color: white;
+-fx-text-fill: black;
+}

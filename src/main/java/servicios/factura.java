@@ -4,6 +4,7 @@
  */
 package servicios;
 
+import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.UUID;
@@ -21,17 +22,14 @@ public interface factura {
 
     static void crearFactura(DataBase db, facturaModel factura, ObservableList<productModel> detalles) {
         String facturaUUID = UUID.randomUUID().toString();
-        PreparedStatement stmt = db.getPreparedStatement("INSERT INTO `tiendas_bethel`.`factura`\n"
-                + "(`id_factura`,\n"
-                + "`descuento`,\n"
-                + "`total`,`consumidor`,`fecha`)\n"
-                + "VALUES\n"
-                + "(?,\n"
-                + "?,\n"
-                + "?,?,NOW());");
 
-        PreparedStatement stmt2 = db.getPreparedStatement("call tiendas_bethel.agregarDetalles(?, ?, ?, ?, ?);");
+        CallableStatement stmt2;
+        CallableStatement stmt ;
+
         try {
+
+            stmt= db.getCon().prepareCall("{CALL crear_factura_p(?,?,?,?)}");
+            stmt2 = db.getCon().prepareCall("{CALL agregarDetalles(?, ?, ?, ?, ?)}");
             /*El AutoCommit viene activado por defecto, este permite
             que los queries se ejecuten tras que esten listos.Osea si tenemos dos
             queries se ejecutaran tras estar listos y no todos a la vez.
