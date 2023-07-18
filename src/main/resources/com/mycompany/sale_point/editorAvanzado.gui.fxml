@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
@@ -13,13 +14,23 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="572.0" prefWidth="959.0" style="-fx-background-color: a3b18a;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.sale_point.editorAvanzadoController">
    <children>
       <TextField fx:id="barra_busqueda" layoutX="42.0" layoutY="35.0" onKeyReleased="#searchItem" prefHeight="50.0" prefWidth="649.0" AnchorPane.leftAnchor="42.0" AnchorPane.rightAnchor="268.0" />
-      <Button id="button2" fx:id="buscar_btn" layoutX="712.0" layoutY="35.0" mnemonicParsing="false" onAction="#buscar_btn_pressed" prefHeight="50.0" prefWidth="123.0" styleClass="button2" stylesheets="@../../../styles/button.css" text="buscar" AnchorPane.rightAnchor="123.79999999999995">
-        </Button>
+      <Button id="button2" fx:id="buscar_btn" layoutX="712.0" layoutY="35.0" mnemonicParsing="false" onAction="#buscar_btn_pressed" prefHeight="50.0" prefWidth="123.0" stylesheets="@../../../styles/button.css" text="buscar" AnchorPane.rightAnchor="123.79999999999995">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <styleClass>
+            <String fx:value="button2" />
+            <String fx:value="icon-button" />
+         </styleClass>
+         <graphic>
+            <SVGPath content="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" scaleX="1.5" scaleY="1.5" styleClass="path-class" translateX="-18.0" />
+         </graphic></Button>
       <SplitMenuButton layoutX="147.0" layoutY="101.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="123.0" text="SplitMenuButton" visible="false" AnchorPane.leftAnchor="147.0">
         <items>
           <MenuItem mnemonicParsing="false" text="Action 1" />
@@ -27,17 +38,53 @@
         </items>
       </SplitMenuButton>
       <TableView fx:id="tableview" layoutX="14.0" layoutY="136.0" prefHeight="396.0" prefWidth="649.0" style="-fx-font-size: 15;" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="42.0" AnchorPane.rightAnchor="268.0" AnchorPane.topAnchor="136.0">
-        </TableView>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></TableView>
       <RadioButton layoutX="74.0" layoutY="105.0" mnemonicParsing="false" text="Filters" visible="false" AnchorPane.leftAnchor="74.0" AnchorPane.rightAnchor="730.4" />
-      <VBox layoutX="716.0" layoutY="136.0" prefHeight="309.0" prefWidth="123.0" spacing="20.0" AnchorPane.bottomAnchor="127.0" AnchorPane.rightAnchor="120.0" AnchorPane.topAnchor="136.0">
+      <VBox layoutX="723.0" layoutY="132.0" prefHeight="309.0" prefWidth="135.0" spacing="20.0" AnchorPane.bottomAnchor="131.0" AnchorPane.rightAnchor="101.0" AnchorPane.topAnchor="132.0">
          <children>
-            <Button id="button2" fx:id="editar_btn" disable="true" mnemonicParsing="false" onAction="#abrir_form" prefHeight="59.0" prefWidth="114.0" styleClass="button2" stylesheets="@../../../styles/button.css" text="Editar">
-              </Button>
-            <Button id="button2" fx:id="agregar_btn" disable="true" mnemonicParsing="false" onAction="#agregar_producto" prefHeight="68.0" prefWidth="119.0" styleClass="button2" stylesheets="@../../../styles/button.css" text="Agregar">
-               </Button>
-            <Button id="button2" fx:id="cambiar_estado" disable="true" mnemonicParsing="false" onAction="#cambiar_estado" prefHeight="63.0" prefWidth="126.0" styleClass="button2" stylesheets="@../../../styles/button.css" text="Estado" />
-            <Button id="button2" layoutX="10.0" layoutY="69.0" mnemonicParsing="false" onAction="#abrir_form" prefHeight="68.0" prefWidth="126.0" styleClass="button2" stylesheets="@../../../styles/button.css" text="Crear Producto">
-               </Button>
+            <Button id="button2" fx:id="editar_btn" disable="true" mnemonicParsing="false" onAction="#abrir_form" prefHeight="58.0" prefWidth="135.0" stylesheets="@../../../styles/button.css" text="Editar">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <styleClass>
+                  <String fx:value="button2" />
+                  <String fx:value="icon-button" />
+               </styleClass>
+               <graphic>
+                  <SVGPath content="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" scaleX="1.5" scaleY="1.5" styleClass="path-class" translateX="-18.0" />
+               </graphic></Button>
+            <Button id="button2" fx:id="agregar_btn" disable="true" mnemonicParsing="false" onAction="#agregar_producto" prefHeight="66.0" prefWidth="136.0" stylesheets="@../../../styles/button.css" text="Agregar">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <styleClass>
+                  <String fx:value="button2" />
+                  <String fx:value="icon-button" />
+               </styleClass>
+               <graphic>
+                  <SVGPath content="M10.5 3.5a2.5 2.5 0 0 0-5 0V4h5v-.5zm1 0V4H15v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4h3.5v-.5a3.5 3.5 0 1 1 7 0zM8.5 8a.5.5 0 0 0-1 0v1.5H6a.5.5 0 0 0 0 1h1.5V12a.5.5 0 0 0 1 0v-1.5H10a.5.5 0 0 0 0-1H8.5V8z" scaleX="1.5" scaleY="1.5" styleClass="path-class" translateX="-18.0" />
+               </graphic></Button>
+            <Button id="button2" fx:id="cambiar_estado" disable="true" mnemonicParsing="false" onAction="#cambiar_estado" prefHeight="62.0" prefWidth="138.0" stylesheets="@../../../styles/button.css" text="Estado">
+               <styleClass>
+                  <String fx:value="button2" />
+                  <String fx:value="icon-button" />
+               </styleClass>
+               <graphic>
+                  <SVGPath content="M6 2a.5.5 0 0 1 .47.33L10 12.036l1.53-4.208A.5.5 0 0 1 12 7.5h3.5a.5.5 0 0 1 0 1h-3.15l-1.88 5.17a.5.5 0 0 1-.94 0L6 3.964 4.47 8.171A.5.5 0 0 1 4 8.5H.5a.5.5 0 0 1 0-1h3.15l1.88-5.17A.5.5 0 0 1 6 2Z" scaleX="1.5" scaleY="1.5" styleClass="path-class" translateX="-18.0" />
+               </graphic></Button>
+            <Button id="button2" layoutX="10.0" layoutY="69.0" mnemonicParsing="false" onAction="#abrir_form" prefHeight="66.0" prefWidth="138.0" stylesheets="@../../../styles/button.css" text="Crear Producto">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <styleClass>
+                  <String fx:value="button2" />
+                  <String fx:value="icon-button" />
+               </styleClass>
+               <graphic>
+                  <SVGPath content="M8 2a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 6.095 0 7.555 0 9.318 0 11.366 1.708 13 3.781 13h8.906C14.502 13 16 11.57 16 9.773c0-1.636-1.242-2.969-2.834-3.194C12.923 3.999 10.69 2 8 2zm.5 4v1.5H10a.5.5 0 0 1 0 1H8.5V10a.5.5 0 0 1-1 0V8.5H6a.5.5 0 0 1 0-1h1.5V6a.5.5 0 0 1 1 0z" scaleX="1.5" scaleY="1.5" styleClass="path-class" />
+               </graphic></Button>
          </children>
       </VBox>
       <AnchorPane fx:id="agregar_producto_form" style="-fx-background-color: white;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">

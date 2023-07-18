@@ -5,6 +5,7 @@
 package com.mycompany.sale_point;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Paths;
 import java.sql.ResultSet;
@@ -12,6 +13,7 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
@@ -25,6 +27,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.Pagination;
 import javafx.scene.control.SplitMenuButton;
 
 import javafx.scene.control.TableColumn;
@@ -32,9 +35,12 @@ import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -58,7 +64,7 @@ public class buscadorProducto implements Initializable, producto {
     private Button buscar_btn;
 
     @FXML
-    private TableView<ObservableList> tableview;
+    private TableView<productModel> tableview;
     @FXML
     private AnchorPane agregar_producto_form;
     @FXML
@@ -81,6 +87,8 @@ public class buscadorProducto implements Initializable, producto {
     private Button agregar_btn;
     @FXML
     private ImageView imagen;
+    @FXML
+    private Pagination paginacion;
 
     private Modos modoActual;
 
@@ -93,19 +101,17 @@ public class buscadorProducto implements Initializable, producto {
      */
     private DataBase database;
     private ObservableList<productModel> listaProductos;
-    Thread hiloBusqueda;
-    Wait espera;
+
+    private boolean estaBuscando = false;
+
     Runnable run;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
+        initTabla();
         modoActual = Modos.CREAR;
         //Esta no es la implementacion mas apropiada pues
         //java Fx cuenta con su propio metodo de concurrencia
-        espera = new Wait(1, this);
-        hiloBusqueda = new Thread(espera);
-
         //Este perimitir realizar debouncing osea limitar la accion de
         //del usuario y tener mejor control del evento de busqueda.
         //Si hay almenos un elemnto seleccionado en la lista permiitiremos al usuario la opcion de editar
@@ -115,11 +121,12 @@ public class buscadorProducto implements Initializable, producto {
                 agregar_btn.setDisable(false);
                 cambiar_estado.setDisable(false);
 
+
                 /*Asignamos la ruta de la imgen a rutaImagen que es una clase File
                  Que nuestro Imageview imagen utiliza para poder mostrar la imagen
                 del producto
                  */
-                rutaImagen = new File("images/" + newSelection.get(7).toString());
+                rutaImagen = new File("images/" + newSelection.getImagen());
 
                 imagen.setImage(new Image(rutaImagen.toURI().toString()));
 
@@ -136,13 +143,67 @@ public class buscadorProducto implements Initializable, producto {
 
         rutaImagen = new File("");
 
+        paginacion.currentPageIndexProperty().addListener((observable, oldValue, newValue) -> {
+            int currentPageIndex = newValue.intValue();
+            /* Para realiza la paginacion y no hacer el query dos veces debemos revisar
+                el booleano estaBuscando que seteamos verdadero en la funcion 
+                buscar_btn_pressed(ActionEvent event); si y solo el indice de
+                paginacion es>0
+                
+             */
+
+            if (!estaBuscando) {
+                //Si acabamos de presionar el boton de buscar resutlado s de pagina actual
+                ResultSet rs = producto.buscar_productos(database, barra_busqueda.getText(), currentPageIndex);
+                try {
+                    buildTable(rs, "");
+                } catch (SQLException ex) {
+                    Logger.getLogger(buscadorProducto.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            } else {
+                //si el indice cambia pero hemos buscado recientemente 
+                //no volvemos a buscar.
+                estaBuscando = false;
+            }
+
+        });
+
+    }
+
+    public void initTabla() {
+        //cmabiar el ancho de la columna
+        ////  nombre_column.prefWidthProperty().bind(tableview.widthProperty().multiply(0.2));
+
+        //pos
+        TableColumn<productModel, Integer> pos_column = new TableColumn<>(" ");
+
+        pos_column.setCellValueFactory(new PropertyValueFactory<productModel, Integer>("pos"));
+        pos_column.prefWidthProperty().bind(tableview.widthProperty().multiply(0.03));
+        //nombre
+        TableColumn<productModel, String> nombre_column = new TableColumn<>("nombre");
+        nombre_column.setCellValueFactory(new PropertyValueFactory<productModel, String>("nombre"));
+        nombre_column.prefWidthProperty().bind(tableview.widthProperty().multiply(0.2));
+
+        //estado
+        TableColumn<productModel, Rectangle> estado_column = new TableColumn<>("estado");
+        estado_column.setCellValueFactory(new PropertyValueFactory<productModel, Rectangle>("color"));
+        //precio
+        TableColumn<productModel, Double> precio_column = new TableColumn<>("precio");
+        precio_column.setCellValueFactory(new PropertyValueFactory<productModel, Double>("precio"));
+        //Descripcion
+        TableColumn<productModel, String> desc_column = new TableColumn<>("descripcion");
+        desc_column.setCellValueFactory(new PropertyValueFactory<productModel, String>("descripcion"));
+        desc_column.prefWidthProperty().bind(tableview.widthProperty().multiply(0.5));
+        tableview.getColumns().addAll(pos_column, nombre_column, estado_column, precio_column, desc_column
+        );
+
     }
 
     public void setDatabase(DataBase instance) throws SQLException {
         database = instance;
         System.out.println("SETTING!!!");
-        database.cargarProductos();
-        buildTable(database.getProductosRs(), "");
+        buildTable(producto.buscar_productos(database, "", paginacion), "");
 
     }
 
@@ -157,11 +218,13 @@ public class buscadorProducto implements Initializable, producto {
     }
 
     public void busquedaAutomatica() {
-        ResultSet rs = producto.buscar_productos(database, barra_busqueda.getText());
+
+        ResultSet rs = producto.buscar_productos(database, barra_busqueda.getText(), paginacion);
         try {
             if (rs != null) {
                 System.out.println("Building Our Table");
                 buildTable(rs, "");
+
             }
 
         } catch (SQLException ex) {
@@ -173,17 +236,13 @@ public class buscadorProducto implements Initializable, producto {
     @FXML
     private void buscar_btn_pressed(ActionEvent event) {
 
-        ResultSet rs = producto.buscar_productos(database, barra_busqueda.getText());
-        try {
-            if (rs != null) {
-                System.out.println("Building Our Table");
-                buildTable(rs, "");
-            }
-
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            System.out.println("SQL Error in buscar btn_pressed");
+        if (paginacion.getCurrentPageIndex() > 0) {
+           //Si nuestro indice es 0 quiere decir que al hacer otra
+           //bsuqeuda no se accionara el listener de paginacion.
+           //puesot que todas las busquedas setean el index en 0
+            estaBuscando = true;
         }
+        busquedaAutomatica();
 
     }
 
@@ -204,7 +263,7 @@ public class buscadorProducto implements Initializable, producto {
         //producto.getProducto_Id(, database)
         try {
             if (tableview.getSelectionModel().getSelectedItem() != null) {
-                String producto_id = tableview.getSelectionModel().getSelectedItem().get(0).toString();
+                String producto_id = tableview.getSelectionModel().getSelectedItem().getId();
                 ResultSet rs = producto.getProducto_Id(producto_id, database);
                 rs.next();
                 String id = rs.getString("id_producto");
@@ -266,22 +325,36 @@ public class buscadorProducto implements Initializable, producto {
 
     @FXML
     void searchItem() throws SQLException {
+        // espera.increment();
+
+        //  Platform.runLater(espera);
+        /*
         espera.increment();
         if (!hiloBusqueda.isAlive()) {
             espera.reset();
-            hiloBusqueda = new Thread(espera);
-            hiloBusqueda.start();
+
+            try {
+                //an event with a button maybe
+                hiloBusqueda = new Thread(espera);
+                hiloBusqueda.start();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+
         }
+         */
     }
 
     @FXML
     private void cambiar_estado(ActionEvent event) {
 
         if (tableview.getSelectionModel().getSelectedItem() != null) {
-            String producto_id = tableview.getSelectionModel().getSelectedItem().get(0).toString();
+            String producto_id = tableview.getSelectionModel().getSelectedItem().getId();
             // el 5 indiica la columna donde se encuentra el nuestro ID
-            String estado = tableview.getSelectionModel().getSelectedItem().get(5).toString();
-            producto.cambiarEstado(database, producto_id, estado.equals("0"));
+            boolean estado = tableview.getSelectionModel().getSelectedItem().getEstado();
+            tableview.getSelectionModel().getSelectedItem().setEstado(!estado);
+            producto.cambiarEstado(database, producto_id, !estado);
+            tableview.refresh();
 
         }
 
@@ -336,7 +409,7 @@ public class buscadorProducto implements Initializable, producto {
             para actualizacion e insercion den Mysql
          */
         productModel productoData = new productModel("", nombre, descripcion, precio, descuento, 0, estado, tipo);
-        /*El constructor de product model no incluye la foto y es necesario usar un set
+        /*El constructor de product model no incluye la ", foto y es necesario usar un set
         Modificaremos el producto que se edito en memoria ya que solo se hacen edicone
         inddividuales no es necesario recargar......*/
         actualizarProducto(productoData);
@@ -365,7 +438,7 @@ public class buscadorProducto implements Initializable, producto {
 
         //Agregar aqui el build Table
         try {
-            buildTable(database.getProductosRs(), "");
+            buildTable(producto.buscar_productos(database, "", 0), "");
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -410,13 +483,13 @@ public class buscadorProducto implements Initializable, producto {
             modoActual = Modos.EDITAR;
 
             //obtenemos la seleccion de la tabla
-            ObservableList seleccion = tableview.getSelectionModel().getSelectedItems().get(0);
+            String id = tableview.getSelectionModel().getSelectedItem().getId();
             //si hay un objeto seleccionado en la tabla entonces
 
             //hara unn query para obtener datos de un prooducto ;
-            ResultSet rs = producto.getProducto_Id(seleccion.get(0).toString(), database);
+            ResultSet rs = producto.getProducto_Id(id, database);
             //cargaremos los tipo en el Spliter tipo_form.
-            selectedProductId = seleccion.get(0).toString();
+            selectedProductId = id;
             //la varaible selectedProductId que es un entero se usara
             //en al funcion confirmar_form();
 
@@ -449,66 +522,34 @@ public class buscadorProducto implements Initializable, producto {
     void ActualizarProductos() {
         //Actualizar los productos que estan en facturar.
 
-        database.cargarProductos();
-
     }
+    ///Esta funcion se ecnarga de construi las tablas en el menu de agreagar y en 
 
     void buildTable(ResultSet rs, String item) throws SQLException {
-        ObservableList<ObservableList> data = FXCollections.observableArrayList();
 
-        tableview.getColumns().clear();
+        tableview.getItems().clear();
+        int counter = 1;
+        while (rs.next()) {
+            System.out.println("Building");
+            String id = rs.getString("id_producto");
+            double precio = rs.getDouble("precio");
+            double descuento = rs.getDouble("descuento");
+            String descripcion = rs.getString("descripcion");
+            String nombre = rs.getString("nombre");
+            boolean estado = rs.getBoolean("estado");
+            String tipo = rs.getString("tipo");
 
-        try {
-            for (int i = 0; i < rs.getMetaData().getColumnCount(); i++) {
-                //We are using non property style for making dynamic table
-                final int j = i;
+            productModel producto = new productModel(id, nombre, descripcion, precio, descuento,
+                    0, estado, tipo);
 
-                TableColumn col = new TableColumn(rs.getMetaData().getColumnName(i + 1));
+            producto.setPos(counter);
+            tableview.getItems().add(producto);
+            counter++;
 
-                col.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
-                    @Override
-                    public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
-                        return new SimpleStringProperty(param.getValue().get(j).toString());
-                    }
-                });
-
-                tableview.getColumns().addAll(col);
-                System.out.println("Column [" + i + "] ");
-
-            }
-            while (rs.next()) {
-                //Iterate Row
-                ObservableList<String> row = FXCollections.observableArrayList();
-                for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-                    //Iterate Column
-                    String cell = rs.getString(i);
-                    if (cell != null) {
-                        row.add(cell);
-                    } else {
-                        row.add(cell);
-                    }
-
-                }
-                System.out.println("Row [1] added " + row);
-                if (item.equals("")) {
-                    data.add(row);
-                } else {
-                    if (row.get(1).toLowerCase().contains(item.toLowerCase())) {
-                        data.add(row);
-                    }
-
-                }
-
-            }
-            //FINALLY ADDED TO TableView
-
-            tableview.setItems(data);
-            tableview.refresh();
-            //rs.beforeFirst();
-
-        } catch (Exception e) {
-            e.printStackTrace();
         }
+
+        tableview.refresh();
+        //rs.beforeFirst();
 
     }
 

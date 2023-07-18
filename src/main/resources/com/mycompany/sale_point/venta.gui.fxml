@@ -19,7 +19,7 @@
             <Insets />
          </BorderPane.margin>
          <children>
-            <TableView fx:id="tabla_productos" layoutX="118.0" layoutY="135.0" prefHeight="483.0" prefWidth="1046.0" stylesheets="@../../../styles/table.css" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="166.8" />
+            <TableView fx:id="tabla_productos" editable="true" layoutX="118.0" layoutY="135.0" prefHeight="483.0" prefWidth="1046.0" stylesheets="@../../../styles/table.css" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="166.8" />
             <TextField fx:id="subtotal_field" editable="false" layoutX="475.0" layoutY="56.0" prefHeight="66.0" prefWidth="324.0" style="-fx-background-color: dad7cd;">
                <font>
                   <Font size="20.0" />

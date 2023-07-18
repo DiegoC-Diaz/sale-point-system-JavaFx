@@ -6,6 +6,7 @@ package servicios;
 
 import com.mycompany.sale_point.buscadorProducto;
 import com.mycompany.sale_point.editorAvanzadoController;
+import javafx.application.Platform;
 
 /**
  *
@@ -41,31 +42,42 @@ public class Wait implements Runnable, producto {
 
     @Override
     public void run() {
-        try {
 
+        try {
+            //an event with a button maybe
+            System.out.println("button is clicked");
             for (int i = 0; i < num; i++) {
                 System.out.println(i);
                 Thread.sleep(mili);
             }
 
             System.out.println("End of thread");
-            String className=controller.getClass().getSimpleName();
-            if (className.equals("buscadorProducto")) {
+        
 
-                ((buscadorProducto) controller).busquedaAutomatica();
+                String className = controller.getClass().getSimpleName();
 
-            }else if(className.equals("editorAvanzadoController")){
-                ((editorAvanzadoController) controller).busquedaAutomatica();
+                if (className.equals ( 
+                    "buscadorProducto")) {
+
+                        ((buscadorProducto) controller).busquedaAutomatica();
+
+                }
+
+                else if (className.equals ( 
+                    "editorAvanzadoController")) {
+                        ((editorAvanzadoController) controller).busquedaAutomatica();
+
+                }
+
+                System.out.println (controller.getClass());
             
-            }
+                
 
-            System.out.println(controller.getClass());
+       
 
-        } catch (InterruptedException ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
-
         }
 
+        }
     }
-
-}

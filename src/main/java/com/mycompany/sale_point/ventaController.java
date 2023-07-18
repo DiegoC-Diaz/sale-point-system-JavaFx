@@ -31,13 +31,20 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import javafx.beans.binding.IntegerExpression;
+import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
+import javafx.event.EventHandler;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn.CellDataFeatures;
+import javafx.scene.control.TableColumn.CellEditEvent;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Screen;
 import javafx.util.Callback;
+import javafx.util.converter.DoubleStringConverter;
 import servicios.formatos;
 
 /**
@@ -76,11 +83,16 @@ public class ventaController implements Initializable, formatos {
             producto_und_field.setTextFormatter(new TextFormatter<>(crearFiltroEnteros()));
             listaProductos = tabla_productos.getItems();
             tabla_productos.setFixedCellSize(60.0);
-          
-            //ID 
-            TableColumn<productModel, String> id_column = new TableColumn<>("id");
-            id_column.prefWidthProperty().bind(tabla_productos.widthProperty().multiply(0.05));
-            id_column.setCellValueFactory(new PropertyValueFactory<productModel, String>("id"));
+
+            //POS
+            TableColumn numberCol = new TableColumn("#");
+            numberCol.setCellValueFactory(new Callback<CellDataFeatures<productModel, String>, ObservableValue<String>>() {
+                @Override
+                public ObservableValue<String> call(CellDataFeatures<productModel, String> p) {
+                    return new ReadOnlyObjectWrapper(tabla_productos.getItems().indexOf(p.getValue()) +1+ "");
+                }
+            });
+            numberCol.setSortable(false);
             //NOMBRE
             TableColumn<productModel, String> nombre_column = new TableColumn<>("nombre");
             nombre_column.prefWidthProperty().bind(tabla_productos.widthProperty().multiply(0.2));
@@ -97,20 +109,47 @@ public class ventaController implements Initializable, formatos {
             TableColumn<productModel, Double> descuento_column = new TableColumn<>("descuento");
             descuento_column.prefWidthProperty().bind(tabla_productos.widthProperty().multiply(0.05));
             descuento_column.setCellValueFactory(new PropertyValueFactory<productModel, Double>("descuento"));
+            descuento_column.setCellFactory(TextFieldTableCell.forTableColumn(new DoubleStringConverter()));
+            descuento_column.setEditable(true);
+            descuento_column.setOnEditCommit(
+                    new EventHandler<CellEditEvent<productModel, Double>>() {
+                @Override
+                public void handle(CellEditEvent<productModel, Double> t) {
+
+                    try {
+                        Double str = t.getNewValue();
+                        double descuento;
+
+                        descuento = str;
+                        ((productModel) t.getTableView().getItems().get(
+                                t.getTablePosition().getRow())).setDescuento(descuento);
+                        tabla_productos.refresh();
+                    } catch (Exception e) {
+
+                    }
+
+                }
+            }
+            );
+
             //CANTIDAD
             TableColumn<productModel, Integer> cantidad_column = new TableColumn<>("cantidad");
             cantidad_column.prefWidthProperty().bind(tabla_productos.widthProperty().multiply(0.05));
             cantidad_column.setCellValueFactory(new PropertyValueFactory<productModel, Integer>("cantidad"));
+
             //TOTAL_DESCEUNTO
-            TableColumn<productModel, Double> total_descuento_column = new TableColumn<>("total_descuento");
-            total_descuento_column.setCellValueFactory(new PropertyValueFactory<productModel, Double>("totalDescuento"));
+            TableColumn<productModel, String> total_descuento_column = new TableColumn<>("total_descuento");
+
+            total_descuento_column.setCellValueFactory(new PropertyValueFactory<productModel, String>("totalDescuentoFormatted"));
+
             total_descuento_column.prefWidthProperty().bind(tabla_productos.widthProperty().multiply(0.2));
-            
+
+            numberCol.setSortable(false);
             //Boton
             TableColumn<productModel, Void> colBtn = new TableColumn("Button Column");
             preparedButton(colBtn);
-            tabla_productos.getColumns().addAll(id_column, nombre_column, descripcion_column,
-                    precio_column, cantidad_column,total_descuento_column,colBtn);
+            tabla_productos.getColumns().addAll(numberCol, nombre_column, descripcion_column,
+                    precio_column, cantidad_column, descuento_column, total_descuento_column, colBtn);
 
             //listener para la lsita de producgos en factura: se activara cada vez que se agregue uno nuevo.
             listaProductos.addListener(new ListChangeListener<productModel>() {
@@ -150,11 +189,10 @@ public class ventaController implements Initializable, formatos {
         database = instance;
 
     }
-     private void preparedButton(TableColumn<productModel, Void> colBtn  ) {
-        
 
-        Callback<TableColumn<productModel, Void>,
-        TableCell<productModel, Void>> cellFactory = new Callback<TableColumn<productModel, Void>, TableCell<productModel, Void>>() {
+    private void preparedButton(TableColumn<productModel, Void> colBtn) {
+
+        Callback<TableColumn<productModel, Void>, TableCell<productModel, Void>> cellFactory = new Callback<TableColumn<productModel, Void>, TableCell<productModel, Void>>() {
             @Override
             public TableCell<productModel, Void> call(final TableColumn<productModel, Void> param) {
                 final TableCell<productModel, Void> cell = new TableCell<productModel, Void>() {
@@ -164,8 +202,7 @@ public class ventaController implements Initializable, formatos {
                     {
                         btn.setOnAction((ActionEvent event) -> {
                             getTableView().getItems().remove(getIndex());
-                           
-                          
+
                         });
                     }
 
@@ -182,11 +219,10 @@ public class ventaController implements Initializable, formatos {
                 return cell;
             }
         };
-        
+
         colBtn.setCellFactory(cellFactory);
 
-       
-     }
+    }
 
     //made with AI
     private UnaryOperator<TextFormatter.Change> crearFiltroEnteros() {
@@ -259,8 +295,6 @@ public class ventaController implements Initializable, formatos {
     public TableView<productModel> getTabla_productos() {
         return tabla_productos;
     }
-    
-    
 
     @FXML
     private void facturar_btn(ActionEvent event) {
@@ -327,6 +361,7 @@ public class ventaController implements Initializable, formatos {
             FXMLLoader fxmlloader = new FXMLLoader(getClass().getResource("utilidad.gui.fxml"));
             Parent root = fxmlloader.load();
             utilidadController NewOptController = fxmlloader.<utilidadController>getController();
+            NewOptController.setDataBase(database);
             Scene scene = new Scene(root, screenSize.getWidth(), screenSize.getHeight());
 
             stage.setScene(scene);
@@ -338,9 +373,6 @@ public class ventaController implements Initializable, formatos {
         }
 
     }
-    
-    
-    
 
     @FXML
     private void agregar_producto(ActionEvent event) {
@@ -351,7 +383,7 @@ public class ventaController implements Initializable, formatos {
             buscadorProducto NewOptController = fxmlloader.<buscadorProducto>getController();
 
             Stage stage = new Stage();
-            Scene scene = new Scene(root, 1000, 600);
+            Scene scene = new Scene(root, 1200, 600);
             stage.setScene(scene);
             stage.show();
             //le pasamos el controlador para leizar actualciones

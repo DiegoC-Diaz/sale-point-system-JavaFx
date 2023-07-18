@@ -41,37 +41,34 @@ public class DataBase {
      */
     public DataBase() throws SQLException {
         // Password =  System.getenv("PASSWORD");
-       /* Host = "localhostly";
+        /* Host = "localhostly";
         User = System.getenv("USER");
         Password = System.getenv("PASSWORD");
         Database = System.getenv("DATABASE");
         Port = System.getenv("PORT");
-*/
+         */
         //jdbc:mysql://localhost:3306/sonoo
         String link = "jdbc:mysql://" + Host + ":" + Port + "/" + Database;
 
-   
-            con = DriverManager.getConnection(link, User, Password);
-            System.out.println(link);
-            
-        
-      
+        con = DriverManager.getConnection(link, User, Password);
+        System.out.println(link);
+
     }
-       public DataBase(String Host,String User,String Password,String Database,String Port) throws SQLException {
+
+    public DataBase(String Host, String User, String Password, String Database, String Port) throws SQLException {
         // Password =  System.getenv("PASSWORD");
         this.Host = Host;
         this.User = User;
-        this.Password =Password;
-        this.Database =Database;
+        this.Password = Password;
+        this.Database = Database;
         this.Port = Port;
         //jdbc:mysql://localhost:3306/sotiendas_bethelnoo
-        String link = "jdbc:mysql://" + Host + ":" + Port + "/" + Database+"?useSSL=false&allowPublicKeyRetrieval=true";
-         con = DriverManager.getConnection(link, User, Password);
-         System.out.println(link);
-            
-        
-      
+        String link = "jdbc:mysql://" + Host + ":" + Port + "/" + Database + "?useSSL=false&allowPublicKeyRetrieval=true";
+        con = DriverManager.getConnection(link, User, Password);
+        System.out.println(link);
+
     }
+
     public Connection getCon() {
         return con;
 
@@ -82,8 +79,32 @@ public class DataBase {
 
     }
 
-    public PreparedStatement getPreparedStatement(String Query) {
+    public int getResultados(String nombre) {
+        PreparedStatement rows = getPreparedStatement("SELECT COUNT(*)  as count FROM producto p WHERE locate(?,p.nombre)>0;");
 
+        try {
+            //campos:
+
+            //Agragremos elementos a una lista para irla actualizando.
+            rows.setString(1, nombre);
+            ResultSet res = rows.executeQuery();
+            res.next();
+            return res.getInt("count");
+
+            //set Paaramters
+        } catch (SQLException ex) {
+
+            ex.printStackTrace();
+
+            System.out.println("NO SE PUEDE");
+        }
+
+        return 0;
+
+    }
+
+    public PreparedStatement getPreparedStatement(String Query) {
+        System.out.println(Query + "\n");
         try {
             return con.prepareStatement(Query, ResultSet.TYPE_SCROLL_SENSITIVE,
                     ResultSet.CONCUR_UPDATABLE);
@@ -95,6 +116,7 @@ public class DataBase {
     }
 
     public void cargarProductos() {
+        System.out.println("EJECUTANDO CARGARPRODUCTOS()");
         //Esta fucnion permite cargar todos los productos en base de datso a memoria
         //Esto aunque pordria ser contra producente a medida crece la base de datos
         //Este o pretenda manejar infromacion de forma si no mas bien un registro local.
@@ -107,8 +129,7 @@ public class DataBase {
                 + "    `producto`.`precio`,\n"
                 + "    `producto`.`descuento`,\n"
                 + " `producto`.`estado`,\n"
-                + "`tipo`,\n"
-                + "`foto`\n"
+                + "`tipo`\n"
                 + "FROM `tiendas_bethel`.`producto` limit 100;");
         //Agregaremos paginacion 
         try {
@@ -121,7 +142,7 @@ public class DataBase {
         } catch (SQLException ex) {
             Logger.getLogger(producto.class.getName()).log(Level.SEVERE, null, ex);
             ex.printStackTrace();
-            
+
             System.out.println("NO SE PUEDE");
         }
 

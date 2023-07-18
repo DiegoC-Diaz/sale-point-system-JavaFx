@@ -38,13 +38,12 @@ public class utilidadController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        try {
-            // TODO
-            database = new DataBase();
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-       
-        }
+
+    }
+    
+    void setDataBase(DataBase database){
+        this.database=database;
+    
     }
 
     @FXML
@@ -58,7 +57,7 @@ public class utilidadController implements Initializable {
             Parent root = fxmlloader.load();
 
             ventaController NewOptController = fxmlloader.<ventaController>getController();
-            
+           
             NewOptController.setDatabase(database);
 
             Scene scene = new Scene(root, screenSize.getWidth(), screenSize.getHeight());

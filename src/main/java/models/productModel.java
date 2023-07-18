@@ -10,60 +10,101 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import servicios.formatos;
 
 /**
  *
  * @author Diego Carcamo
  */
-public class productModel {
+public class productModel implements formatos{
 
     public String nombre, descripcion;
     public double precio, descuento;
     private String id;
     private int cantidad;//no confunidr cantidad con la cantidad disponible del producto,
     //cantidad hace refrencia a una variable usada en factura para saber cuantas unidades del producto se llevan.
-    boolean estado;
-    String tipo;
-    String imagen;
+    private boolean estado;
+    private String tipo;
+    private String imagen;
+    private int pos;
 
     public productModel() {
 
     }
 
-    public productModel(String id, String nombre, String descripcion, double precio, double descuento, int cantidad,boolean estado,String tipo) {
+    public productModel(String id, String nombre, String descripcion, double precio, double descuento, int cantidad, boolean estado, String tipo) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.precio = precio;
         this.descuento = descuento;
-        this.estado=estado;
+        this.estado = estado;
         this.cantidad = cantidad;
-        this.tipo=tipo;
-        this.imagen="";
+        this.tipo = tipo;
+        this.imagen = "";
+        pos = 0;
+
+    }
+
+    public void setPos(int pos) {
+        this.pos = pos;
+    }
+
+    public int getPos() {
+        return pos;
+
+    }
+    public String getDescuentoStr(){
+    
+        return descuento+"";
+    
+    };
+
+    public double getTotalDescuento() {
+        return -getSubtotal() * descuento;
 
     }
     
-    public double getTotalDescuento(){
-        return -getSubtotal()*descuento;
-    
+    public String getTotalDescuentoFormatted() {
+        return ("-"+formatos.getFormatoLempira(getSubtotal() * descuento));
+
+    }
+
+    public void setImagen(String ruta) {
+
+        this.imagen = ruta;
+    }
+
+    public String getImagen() {
+
+        return this.imagen;
+    }
+
+    public void setTipo(String tipo) {
+
+        this.tipo = tipo;
     }
     
-    public void setImagen(String ruta){
-    
-        this.imagen=ruta;
+    public void setEstado(boolean estado){
+        this.estado=estado;
+        
     }
+
+    public Rectangle getColor() {
+        Color color = estado ? Color.web("#3cba13", 1.0) : Color.web("#d1321d", 1.0);
+
+        Rectangle r = new Rectangle();
+        r.setWidth(40);
+        r.setHeight(40);
+        r.setFill(color);
+
+        return r;
     
-    public String getImagen(){
-    
-       return this.imagen;
     }
-    public void setTipo(String tipo){
-    
-        this.tipo=tipo;
-    }
-    
-    
-    public String getTipo(){
+
+    public String getTipo() {
         return tipo;
     }
 
@@ -118,7 +159,8 @@ public class productModel {
         }
 
     }
-    public boolean getEstado(){
+
+    public boolean getEstado() {
         return estado;
     }
 
@@ -135,8 +177,8 @@ public class productModel {
 
     public double getTotal() {
         //Se aplica el descuento del producto.
-        return getSubtotal()-(getSubtotal()*descuento);
-        
+        return getSubtotal() - (getSubtotal() * descuento);
+
     }
 
 }
