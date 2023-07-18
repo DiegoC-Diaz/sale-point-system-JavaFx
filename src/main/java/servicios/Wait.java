@@ -51,33 +51,27 @@ public class Wait implements Runnable, producto {
                 Thread.sleep(mili);
             }
 
-            System.out.println("End of thread");
-        
+            Platform.runLater(() -> {
 
                 String className = controller.getClass().getSimpleName();
 
-                if (className.equals ( 
-                    "buscadorProducto")) {
+                if (className.equals(
+                        "buscadorProducto")) {
 
-                        ((buscadorProducto) controller).busquedaAutomatica();
+                    ((buscadorProducto) controller).busquedaAutomatica();
 
-                }
-
-                else if (className.equals ( 
-                    "editorAvanzadoController")) {
-                        ((editorAvanzadoController) controller).busquedaAutomatica();
+                } else if (className.equals(
+                        "editorAvanzadoController")) {
+                    ((editorAvanzadoController) controller).busquedaAutomatica();
 
                 }
+                System.out.println(controller.getClass());
 
-                System.out.println (controller.getClass());
-            
-                
-
-       
+            });
 
         } catch (Exception ex) {
             ex.printStackTrace();
         }
 
-        }
     }
+}

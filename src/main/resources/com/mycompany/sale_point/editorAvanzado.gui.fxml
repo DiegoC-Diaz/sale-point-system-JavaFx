@@ -91,13 +91,25 @@
          <children>
             <VBox layoutX="42.0" layoutY="36.0" prefHeight="202.0" prefWidth="390.0" spacing="20.0" AnchorPane.bottomAnchor="262.0" AnchorPane.leftAnchor="42.0" AnchorPane.rightAnchor="426.0" AnchorPane.topAnchor="36.0">
                <children>
-                  <TextField fx:id="nombre_form" prefHeight="34.0" prefWidth="302.0" />
-                  <TextField fx:id="precio_form" prefHeight="34.0" prefWidth="302.0" />
+                  <TextField fx:id="nombre_form" prefHeight="34.0" prefWidth="302.0">
+                     <font>
+                        <Font size="15.0" />
+                     </font></TextField>
+                  <TextField fx:id="precio_form" prefHeight="34.0" prefWidth="302.0">
+                     <font>
+                        <Font size="15.0" />
+                     </font></TextField>
                   <SplitMenuButton fx:id="tipo_form" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="42.0" prefWidth="496.0" />
-                  <TextField fx:id="descuento_form" prefHeight="34.0" prefWidth="302.0" />
+                  <TextField fx:id="descuento_form" prefHeight="34.0" prefWidth="302.0">
+                     <font>
+                        <Font size="15.0" />
+                     </font></TextField>
                </children>
             </VBox>
-            <TextArea fx:id="descripcion_form" layoutX="31.0" layoutY="259.0" prefHeight="202.0" prefWidth="403.0" AnchorPane.bottomAnchor="38.599999999999994" AnchorPane.leftAnchor="31.0" AnchorPane.rightAnchor="423.8" AnchorPane.topAnchor="259.0" />
+            <TextArea fx:id="descripcion_form" layoutX="31.0" layoutY="259.0" prefHeight="202.0" prefWidth="403.0" AnchorPane.bottomAnchor="38.599999999999994" AnchorPane.leftAnchor="31.0" AnchorPane.rightAnchor="423.8" AnchorPane.topAnchor="259.0">
+               <font>
+                  <Font size="18.0" />
+               </font></TextArea>
             <VBox layoutX="441.0" layoutY="34.0" prefHeight="194.0" prefWidth="321.0" spacing="20.0" AnchorPane.rightAnchor="95.39999999999998" AnchorPane.topAnchor="34.0">
                <children>
                   <Label prefHeight="37.0" prefWidth="233.0" text="Nombre">

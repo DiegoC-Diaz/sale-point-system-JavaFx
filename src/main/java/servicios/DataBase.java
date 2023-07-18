@@ -80,7 +80,7 @@ public class DataBase {
     }
 
     public int getResultados(String nombre) {
-        PreparedStatement rows = getPreparedStatement("SELECT COUNT(*)  as count FROM producto p WHERE locate(?,p.nombre)>0;");
+        PreparedStatement rows = getPreparedStatement("SELECT COUNT(*)  as count FROM producto p WHERE locate(?,p.nombre)>0 limit 300;");
 
         try {
             //campos:

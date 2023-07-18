@@ -103,12 +103,16 @@ public class buscadorProducto implements Initializable, producto {
     private ObservableList<productModel> listaProductos;
 
     private boolean estaBuscando = false;
+    private Thread hiloBusqueda;
+    private Wait espera;
 
     Runnable run;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         initTabla();
+        espera= new Wait(1,this);
+        hiloBusqueda=new Thread(espera);
         modoActual = Modos.CREAR;
         //Esta no es la implementacion mas apropiada pues
         //java Fx cuenta con su propio metodo de concurrencia
@@ -183,7 +187,7 @@ public class buscadorProducto implements Initializable, producto {
         //nombre
         TableColumn<productModel, String> nombre_column = new TableColumn<>("nombre");
         nombre_column.setCellValueFactory(new PropertyValueFactory<productModel, String>("nombre"));
-        nombre_column.prefWidthProperty().bind(tableview.widthProperty().multiply(0.2));
+        nombre_column.prefWidthProperty().bind(tableview.widthProperty().multiply(0.5));
 
         //estado
         TableColumn<productModel, Rectangle> estado_column = new TableColumn<>("estado");
@@ -194,7 +198,7 @@ public class buscadorProducto implements Initializable, producto {
         //Descripcion
         TableColumn<productModel, String> desc_column = new TableColumn<>("descripcion");
         desc_column.setCellValueFactory(new PropertyValueFactory<productModel, String>("descripcion"));
-        desc_column.prefWidthProperty().bind(tableview.widthProperty().multiply(0.5));
+        desc_column.prefWidthProperty().bind(tableview.widthProperty().multiply(0.2));
         tableview.getColumns().addAll(pos_column, nombre_column, estado_column, precio_column, desc_column
         );
 
@@ -325,10 +329,10 @@ public class buscadorProducto implements Initializable, producto {
 
     @FXML
     void searchItem() throws SQLException {
-        // espera.increment();
+        espera.increment();
 
         //  Platform.runLater(espera);
-        /*
+     
         espera.increment();
         if (!hiloBusqueda.isAlive()) {
             espera.reset();
@@ -342,7 +346,7 @@ public class buscadorProducto implements Initializable, producto {
             }
 
         }
-         */
+       
     }
 
     @FXML
