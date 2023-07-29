@@ -13,11 +13,7 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.application.Platform;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import javafx.event.ActionEvent;
@@ -26,12 +22,13 @@ import javafx.fxml.Initializable;
 
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Pagination;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.SplitMenuButton;
 
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -44,7 +41,6 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import javafx.util.Callback;
 import models.productModel;
 
 import servicios.DataBase;
@@ -62,7 +58,8 @@ public class buscadorProducto implements Initializable, producto {
     private TextField barra_busqueda;
     @FXML
     private Button buscar_btn;
-
+    @FXML
+    private ComboBox<String> filtros;
     @FXML
     private TableView<productModel> tableview;
     @FXML
@@ -89,7 +86,9 @@ public class buscadorProducto implements Initializable, producto {
     private ImageView imagen;
     @FXML
     private Pagination paginacion;
-
+    @FXML
+    private RadioButton activar_filtros;
+    
     private Modos modoActual;
 
     private String selectedProductId;
@@ -111,8 +110,9 @@ public class buscadorProducto implements Initializable, producto {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         initTabla();
-        espera= new Wait(1,this);
-        hiloBusqueda=new Thread(espera);
+
+        espera = new Wait(1, this);
+        hiloBusqueda = new Thread(espera);
         modoActual = Modos.CREAR;
         //Esta no es la implementacion mas apropiada pues
         //java Fx cuenta con su propio metodo de concurrencia
@@ -206,6 +206,7 @@ public class buscadorProducto implements Initializable, producto {
 
     public void setDatabase(DataBase instance) throws SQLException {
         database = instance;
+        cargarTipo();
         System.out.println("SETTING!!!");
         buildTable(producto.buscar_productos(database, "", paginacion), "");
 
@@ -241,9 +242,9 @@ public class buscadorProducto implements Initializable, producto {
     private void buscar_btn_pressed(ActionEvent event) {
 
         if (paginacion.getCurrentPageIndex() > 0) {
-           //Si nuestro indice es 0 quiere decir que al hacer otra
-           //bsuqeuda no se accionara el listener de paginacion.
-           //puesot que todas las busquedas setean el index en 0
+            //Si nuestro indice es 0 quiere decir que al hacer otra
+            //bsuqeuda no se accionara el listener de paginacion.
+            //puesot que todas las busquedas setean el index en 0
             estaBuscando = true;
         }
         busquedaAutomatica();
@@ -296,6 +297,8 @@ public class buscadorProducto implements Initializable, producto {
 
     void cargarTipo() {
         tipo_form.getItems().clear();
+        filtros.getItems().clear();
+
         //Query para obtener tdoos los elementos de la tabla tipos
         ResultSet rs = producto.getTipos(database);
         try {
@@ -303,13 +306,18 @@ public class buscadorProducto implements Initializable, producto {
                 //agergamos un estilo a cada MenuItem. (solo aumenta el tamaño
                 //de la letra)
                 String estilo = "-fx-font-size: 20px;";
-                MenuItem tipo = new MenuItem(rs.getString("nombre"));
+                String nombre=(rs.getString("nombre"));
+                MenuItem tipo = new MenuItem(nombre);
                 tipo.setOnAction(event -> {
                     tipo_form.setText(tipo.getText());
+                    
                 });
+                
 
                 tipo.setStyle(estilo);
+                filtros.getItems().add(nombre);
                 tipo_form.getItems().add(tipo);
+
             }
             rs.close();
         } catch (SQLException ex) {
@@ -332,7 +340,6 @@ public class buscadorProducto implements Initializable, producto {
         espera.increment();
 
         //  Platform.runLater(espera);
-     
         espera.increment();
         if (!hiloBusqueda.isAlive()) {
             espera.reset();
@@ -346,7 +353,7 @@ public class buscadorProducto implements Initializable, producto {
             }
 
         }
-       
+
     }
 
     @FXML
@@ -478,6 +485,7 @@ public class buscadorProducto implements Initializable, producto {
     @FXML
     private void abrir_form(ActionEvent event) {
         agregar_producto_form.setVisible(true);
+
         cargarTipo();
         //caragr tipo rellena el splitter que esta en el formulaaario de
         //agreagr/editar
