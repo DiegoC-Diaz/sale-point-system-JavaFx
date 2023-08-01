@@ -20,14 +20,16 @@ public class ventaModel {
     
    
     
-    public ventaModel(double totalBruto,double totalNeto,String nombre){
+    public ventaModel(double totalBruto,double totalNeto,String nombre,int cantidad){
         this.nombre=nombre;
         this.totalBruto=totalBruto;
         this.totalNeto=totalNeto;
+        this.cantidad=cantidad;
         
     
     
     }
+    
 
     public String getNombre() {
         return nombre;

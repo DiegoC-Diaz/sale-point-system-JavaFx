@@ -20,13 +20,14 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import servicios.DataBase;
+import servicios.reportes;
 
 /**
  * FXML Controller class
  *
  * @author Diego Carcamo
  */
-public class utilidadController implements Initializable {
+public class utilidadController implements Initializable,reportes {
 
     /**
      * Initializes the controller class.
@@ -76,10 +77,16 @@ public class utilidadController implements Initializable {
     private void mostrar_ventas(ActionEvent event) {
         panelPrincipal.getChildren().clear();
         
-        reporteController rpController = cargarEscena("reportes.gui.fxml")
-                .<reporteController>getController();
+        reporteCierreController rpController = cargarEscena("reporteCierre.fxml")
+                .<reporteCierreController>getController();
         
         
+        
+        reportes.finalDia(database,rpController.getProuductos());
+       rpController.cargarDatos();
+        System.out.println("intentnado cargar datos");
+        
+       
 
     }
 

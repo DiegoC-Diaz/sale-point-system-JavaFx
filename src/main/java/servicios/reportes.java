@@ -43,8 +43,9 @@ public interface reportes {
         while(rs.next()){
         
             ventaModel venta= new ventaModel(rs.getDouble("valor_bruto"),rs.getDouble("valor_neto"),
-                     rs.getString("nombre"));
+                     rs.getString("nombre"),rs.getInt("cantidad"));
             
+            System.out.println("Construyendo ventas!!!\n");
             ventas.add(venta);
         
         }

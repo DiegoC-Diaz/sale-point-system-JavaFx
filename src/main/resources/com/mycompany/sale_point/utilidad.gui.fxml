@@ -37,7 +37,7 @@
          <children>
             <VBox layoutX="10.0" layoutY="13.0" prefHeight="675.0" prefWidth="178.0" spacing="20.0">
                <children>
-                  <Button mnemonicParsing="false" onAction="#mostrar_ventas" prefHeight="102.0" prefWidth="186.0" stylesheets="@../../../styles/button.css" text="Ventas">
+                  <Button mnemonicParsing="false" onAction="#mostrar_ventas" prefHeight="102.0" prefWidth="186.0" stylesheets="@../../../styles/button.css" text="Ventas del dia">
                      <font>
                         <Font size="20.0" />
                      </font>
@@ -48,6 +48,11 @@
                      </font>
                   </Button>
                   <Button layoutX="10.0" layoutY="132.0" mnemonicParsing="false" onAction="#ir_facturar" prefHeight="102.0" prefWidth="186.0" stylesheets="@../../../styles/button.css" text="Ir a Facturar">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Button>
+                  <Button mnemonicParsing="false" prefHeight="99.0" prefWidth="186.0" stylesheets="@../../../styles/button.css" text="Reportes">
                      <font>
                         <Font size="20.0" />
                      </font>
