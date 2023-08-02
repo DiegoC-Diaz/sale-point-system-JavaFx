@@ -21,6 +21,7 @@ import models.productModel;
  * @author Diego Carcamo
  */
 public interface producto {
+
     //Tamaño de las paginas
     static double PageSize = 100.0;
 
@@ -155,22 +156,15 @@ public interface producto {
 
     }
 
-    static ResultSet buscar_productos(DataBase database, String nombre, Pagination pag) {
-
-        ResultSet rs = buscar_productos(database, nombre, pag.getCurrentPageIndex());
-        //Se esta ejecutando dos veces
-        int res=database.getResultados(nombre);
-        System.out.println("Resultados de la tabal prodducto:"+res);
-        
-
-        System.out.println("EJECUTNANDO buscarProductos PAG\n");
-        int paginas = (int) Math.ceil(res/ PageSize);
+    static void indexar(DataBase database, String nombre, Pagination pag) {
+        int res = database.getResultados();
+        int paginas = (int) Math.ceil(res / PageSize);
         Platform.runLater(() -> {
             try {
                 //an event with a button maybe
                 System.out.println("button is clicked");
                 System.out.println("Index:" + pag.getCurrentPageIndex());
-      
+
                 pag.setPageCount(paginas);
 
                 pag.setMaxPageIndicatorCount(paginas);
@@ -180,19 +174,60 @@ public interface producto {
                 ex.printStackTrace();
             }
         });
+    }
+
+    public static ResultSet buscar_productos(DataBase database, String nombre, Pagination pag) {
+
+        ResultSet rs = buscar_productos(database, nombre, pag.getCurrentPageIndex());
+        //Se esta ejecutando dos veces
+        indexar(database, nombre, pag);
 
         return rs;
 
     }
 
-    static ResultSet buscar_productos(DataBase database, String nombre, int offset) {
+    public static ResultSet buscar_productos(DataBase database, String nombre,String tipo, Pagination pag) {
+
+        ResultSet rs = buscar_productos(database, nombre,tipo, pag.getCurrentPageIndex());
+        //Se esta ejecutando dos veces
+        indexar(database, nombre, pag);
+
+        return rs;
+
+    }
+
+    //funcion principal
+     static ResultSet buscar_productos(DataBase database, String nombre, int offset) {
 
         try {
             System.out.println("EJECUTNANDO buscarProductos OFFSET\n");
             CallableStatement stm = database.getCon().prepareCall("{CALL buscar_producto_nombre(?,?)}");
 
             stm.setString(1, nombre);
-            stm.setInt(2,(int) (offset*PageSize));
+            stm.setInt(2, (int) (offset * PageSize));
+            ResultSet rs = stm.executeQuery();
+
+            return rs;
+
+        } catch (SQLException ex) {
+            System.out.println("FATAL ERROE EXECUTING buscar_producto ");
+            ex.printStackTrace();
+
+        }
+        return null;
+
+    }
+
+    //busqeuda por tipo
+     static ResultSet buscar_productos(DataBase database, String nombre, String tipo, int offset) {
+
+        try {
+            System.out.println("EJECUTNANDO buscarProductos OFFSET\n");
+            CallableStatement stm = database.getCon().prepareCall("{CALL buscar_producto_tipo_p(?,?,?)}");
+
+            stm.setString(1, nombre);
+            stm.setString(2, tipo);
+            stm.setInt(3, (int) (offset * PageSize));
             ResultSet rs = stm.executeQuery();
 
             return rs;

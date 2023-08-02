@@ -102,6 +102,29 @@ public class DataBase {
         return 0;
 
     }
+        public int getResultados() {
+        PreparedStatement rows = getPreparedStatement("SELECT FOUND_ROWS() as count;");
+
+        try {
+            //campos:
+
+            //Agragremos elementos a una lista para irla actualizando.
+           
+            ResultSet res = rows.executeQuery();
+            res.next();
+            return res.getInt("count");
+
+            //set Paaramters
+        } catch (SQLException ex) {
+
+            ex.printStackTrace();
+
+            System.out.println("NO SE PUEDE");
+        }
+
+        return 0;
+
+    }
 
     public PreparedStatement getPreparedStatement(String Query) {
         System.out.println(Query + "\n");

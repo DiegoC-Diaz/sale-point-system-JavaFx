@@ -88,7 +88,7 @@ public class buscadorProducto implements Initializable, producto {
     private Pagination paginacion;
     @FXML
     private RadioButton activar_filtros;
-    
+
     private Modos modoActual;
 
     private String selectedProductId;
@@ -144,6 +144,11 @@ public class buscadorProducto implements Initializable, producto {
                 tipo_form.show();
             }
         });
+        filtros.setVisible(false);
+        activar_filtros.setOnAction((t) -> {
+
+            filtros.setVisible((activar_filtros.isSelected()) ? true : false);
+        });
 
         rutaImagen = new File("");
 
@@ -158,7 +163,13 @@ public class buscadorProducto implements Initializable, producto {
 
             if (!estaBuscando) {
                 //Si acabamos de presionar el boton de buscar resutlado s de pagina actual
-                ResultSet rs = producto.buscar_productos(database, barra_busqueda.getText(), currentPageIndex);
+                ResultSet rs ;
+                if(filtros.isVisible()&& filtros.getSelectionModel().getSelectedItem()!=null){
+                  rs = producto.buscar_productos(database, barra_busqueda.getText(),filtros.getSelectionModel().getSelectedItem(), currentPageIndex);
+                }else{
+                  rs = producto.buscar_productos(database, barra_busqueda.getText(), currentPageIndex);
+                }
+               
                 try {
                     buildTable(rs, "");
                 } catch (SQLException ex) {
@@ -223,8 +234,14 @@ public class buscadorProducto implements Initializable, producto {
     }
 
     public void busquedaAutomatica() {
+        ResultSet rs;
+        if (filtros.isVisible() && filtros.getSelectionModel().getSelectedItem()!=null) {
+            rs = producto.buscar_productos(database, barra_busqueda.getText(),filtros.getSelectionModel().getSelectedItem(), paginacion);
+        } else {
+             rs = producto.buscar_productos(database, barra_busqueda.getText(), paginacion);
 
-        ResultSet rs = producto.buscar_productos(database, barra_busqueda.getText(), paginacion);
+        }
+
         try {
             if (rs != null) {
                 System.out.println("Building Our Table");
@@ -306,13 +323,12 @@ public class buscadorProducto implements Initializable, producto {
                 //agergamos un estilo a cada MenuItem. (solo aumenta el tamaño
                 //de la letra)
                 String estilo = "-fx-font-size: 20px;";
-                String nombre=(rs.getString("nombre"));
+                String nombre = (rs.getString("nombre"));
                 MenuItem tipo = new MenuItem(nombre);
                 tipo.setOnAction(event -> {
                     tipo_form.setText(tipo.getText());
-                    
+
                 });
-                
 
                 tipo.setStyle(estilo);
                 filtros.getItems().add(nombre);
@@ -449,6 +465,8 @@ public class buscadorProducto implements Initializable, producto {
 
         //Agregar aqui el build Table
         try {
+            filtros.setVisible(false);
+            activar_filtros.setSelected(false);
             buildTable(producto.buscar_productos(database, "", 0), "");
         } catch (SQLException ex) {
             ex.printStackTrace();
