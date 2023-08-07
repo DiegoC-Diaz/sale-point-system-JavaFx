@@ -89,13 +89,13 @@
                </graphic></Button>
          </children>
       </VBox>
-      <Pagination fx:id="paginacion" layoutX="230.0" layoutY="523.0" prefHeight="42.0" prefWidth="271.0" scaleX="1.2" scaleY="1.2" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="230.0" AnchorPane.rightAnchor="457.8" />
+      <Pagination fx:id="paginacion" layoutX="230.0" layoutY="523.0" prefHeight="42.0" prefWidth="271.0" scaleX="1.2" scaleY="1.2" stylesheets="@../../../styles/pagination.css" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="230.0" AnchorPane.rightAnchor="457.8" />
       <Label layoutX="81.0" layoutY="91.0" prefHeight="18.0" prefWidth="46.0" text="Filtros:" AnchorPane.leftAnchor="81.0">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
-      <ComboBox fx:id="filtros" layoutX="151.0" layoutY="88.0" prefHeight="26.0" prefWidth="155.0" promptText="Elegir filtro" AnchorPane.leftAnchor="151.0" />
+      <ComboBox fx:id="filtros" layoutX="139.0" layoutY="88.0" prefHeight="26.0" prefWidth="180.0" promptText="Elegir filtro" stylesheets="@../../../styles/comboBox.css" AnchorPane.leftAnchor="139.0" />
       <RadioButton fx:id="activar_filtros" layoutX="42.0" layoutY="93.0" mnemonicParsing="false" AnchorPane.leftAnchor="42.0" />
       <AnchorPane fx:id="agregar_producto_form" style="-fx-background-color: a3b18a;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -109,7 +109,7 @@
                      <font>
                         <Font size="15.0" />
                      </font></TextField>
-                  <SplitMenuButton fx:id="tipo_form" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="42.0" prefWidth="496.0" style="-fx-background-color: dad7cd;" />
+                  <ComboBox fx:id="tipo_form" maxWidth="1.7976931348623157E308" prefHeight="38.0" prefWidth="540.0" stylesheets="@../../../styles/comboBox.css" />
                   <TextField fx:id="descuento_form" prefHeight="34.0" prefWidth="302.0" style="-fx-background-color: dad7cd;">
                      <font>
                         <Font size="15.0" />

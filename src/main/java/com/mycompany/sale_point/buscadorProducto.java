@@ -4,17 +4,21 @@
  */
 package com.mycompany.sale_point;
 
+
 import java.io.File;
-import java.io.IOException;
+
 import java.net.URL;
 import java.nio.file.Paths;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+
 import javafx.collections.ObservableList;
+
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -23,25 +27,28 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.MenuItem;
+
 import javafx.scene.control.Pagination;
 import javafx.scene.control.RadioButton;
-import javafx.scene.control.SplitMenuButton;
+
 
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
+
 import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import models.productModel;
+import servicios.AutoCompleteComboBoxListener;
 
 import servicios.DataBase;
 import servicios.Wait;
@@ -59,7 +66,7 @@ public class buscadorProducto implements Initializable, producto {
     @FXML
     private Button buscar_btn;
     @FXML
-    private ComboBox<String> filtros;
+    protected ComboBox<String> filtros;
     @FXML
     private TableView<productModel> tableview;
     @FXML
@@ -77,7 +84,7 @@ public class buscadorProducto implements Initializable, producto {
     @FXML
     private TextField descuento_form;
     @FXML
-    private SplitMenuButton tipo_form;
+    protected ComboBox<String> tipo_form;
     @FXML
     private TextArea descripcion_form;
     @FXML
@@ -104,13 +111,17 @@ public class buscadorProducto implements Initializable, producto {
     private boolean estaBuscando = false;
     private Thread hiloBusqueda;
     private Wait espera;
-
+    
+    protected AutoCompleteComboBoxListener comboBoxFiltrado;
+    protected AutoCompleteComboBoxListener comboBoxFiltrado2;
     Runnable run;
+
+
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         initTabla();
-
+        
         espera = new Wait(1, this);
         hiloBusqueda = new Thread(espera);
         modoActual = Modos.CREAR;
@@ -136,14 +147,15 @@ public class buscadorProducto implements Initializable, producto {
 
             }
         });
+        try {
+                 comboBoxFiltrado=new AutoCompleteComboBoxListener<>(tipo_form);
+                 comboBoxFiltrado2=new AutoCompleteComboBoxListener<>(filtros);
+        } catch (Exception e) {
+            System.out.println("OCURRIO UN ERROR!!");
+            e.printStackTrace();
+        }
+   
 
-        tipo_form.setOnMouseClicked(event -> {
-            if (tipo_form.isShowing()) {
-                tipo_form.hide();
-            } else {
-                tipo_form.show();
-            }
-        });
         filtros.setVisible(false);
         activar_filtros.setOnAction((t) -> {
 
@@ -163,13 +175,13 @@ public class buscadorProducto implements Initializable, producto {
 
             if (!estaBuscando) {
                 //Si acabamos de presionar el boton de buscar resutlado s de pagina actual
-                ResultSet rs ;
-                if(filtros.isVisible()&& filtros.getSelectionModel().getSelectedItem()!=null){
-                  rs = producto.buscar_productos(database, barra_busqueda.getText(),filtros.getSelectionModel().getSelectedItem(), currentPageIndex);
-                }else{
-                  rs = producto.buscar_productos(database, barra_busqueda.getText(), currentPageIndex);
+                ResultSet rs;
+                if (filtros.isVisible() && filtros.getSelectionModel().getSelectedItem() != null) {
+                    rs = producto.buscar_productos(database, barra_busqueda.getText(), filtros.getSelectionModel().getSelectedItem(), currentPageIndex);
+                } else {
+                    rs = producto.buscar_productos(database, barra_busqueda.getText(), currentPageIndex);
                 }
-               
+
                 try {
                     buildTable(rs, "");
                 } catch (SQLException ex) {
@@ -183,6 +195,7 @@ public class buscadorProducto implements Initializable, producto {
             }
 
         });
+ 
 
     }
 
@@ -235,10 +248,10 @@ public class buscadorProducto implements Initializable, producto {
 
     public void busquedaAutomatica() {
         ResultSet rs;
-        if (filtros.isVisible() && filtros.getSelectionModel().getSelectedItem()!=null) {
-            rs = producto.buscar_productos(database, barra_busqueda.getText(),filtros.getSelectionModel().getSelectedItem(), paginacion);
+        if (filtros.isVisible() && filtros.getSelectionModel().getSelectedItem() != null) {
+            rs = producto.buscar_productos(database, barra_busqueda.getText(), filtros.getSelectionModel().getSelectedItem(), paginacion);
         } else {
-             rs = producto.buscar_productos(database, barra_busqueda.getText(), paginacion);
+            rs = producto.buscar_productos(database, barra_busqueda.getText(), paginacion);
 
         }
 
@@ -322,22 +335,16 @@ public class buscadorProducto implements Initializable, producto {
             while (rs.next()) {
                 //agergamos un estilo a cada MenuItem. (solo aumenta el tamaño
                 //de la letra)
-                String estilo = "-fx-font-size: 20px;";
+               
                 String nombre = (rs.getString("nombre"));
-                MenuItem tipo = new MenuItem(nombre);
-                tipo.setOnAction(event -> {
-                    tipo_form.setText(tipo.getText());
 
-                });
-
-                tipo.setStyle(estilo);
                 filtros.getItems().add(nombre);
-                tipo_form.getItems().add(tipo);
+                tipo_form.getItems().add(nombre);
 
             }
             rs.close();
         } catch (SQLException ex) {
-            Logger.getLogger(buscadorProducto.class.getName()).log(Level.SEVERE, null, ex);
+           ex.printStackTrace();
         }
     }
 
@@ -424,7 +431,7 @@ public class buscadorProducto implements Initializable, producto {
         double precio = Double.parseDouble(precio_form.getText());
 
         double descuento = Double.parseDouble(descuento_form.getText());
-        String tipo = tipo_form.getText();
+        String tipo = tipo_form.getValue();
         String descripcion = descripcion_form.getText();
         boolean estado = estado_form.isSelected();
         String foto = rutaImagen.getAbsoluteFile().getName();
@@ -529,7 +536,7 @@ public class buscadorProducto implements Initializable, producto {
                 descuento_form.setText(rs.getDouble("descuento") + "");
                 precio_form.setText(rs.getString("precio"));
                 descripcion_form.setText(rs.getString("descripcion"));
-                tipo_form.setText(rs.getString("tipo"));
+                tipo_form.setValue(rs.getString("tipo"));
                 estado_form.setSelected(rs.getBoolean("estado"));
 
             } catch (SQLException ex) {
