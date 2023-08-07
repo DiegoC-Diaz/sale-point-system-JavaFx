@@ -10,16 +10,17 @@ jdeps --module-path "install/windows/jmods" --add-modules=javafx.controls --list
 ```
 
 
-This are the necessary instruction to create a jre from javaFx jmods.
+These are the necessary instruction to create a jre from javaFx jmods.
 ```
 jlink --output install/windows/jdk20+fx  --module-path install/windows/jmods  --add-modules javafx.base,javafx.controls,
 javafx.fxml,java.logging,java.datatransfer,java.desktop,java.logging,java.management,java.naming,java.rmi,java.scripting,
 java.sql,java.transaction.xa,java.xml,
 jdk.jsobject,jdk.unsupported,jdk.unsupported.desktop,jdk.xml.dom
 ```
-in this case for this project. becouse its using MySQL jdbc and java 
-the   "--module-path"  let you add the jmods path, if you already got  java SDK 11 or later sdk in 
-Windows paths you can simply add the rest of the paths listed in by jdeps command.
+For this project am using MySQL jdbc connector,
+the   "--module-path" will let you add a jmods path, if you already had java SDK 11 or later  installed and   paths configured 
+you can simply add the those to the paths listed in by jdeps command. Otherwise i recomment to download jmods from official JavaF website.
+(https://gluonhq.com/products/javafx/)
 
 
 
