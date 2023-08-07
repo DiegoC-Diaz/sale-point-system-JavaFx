@@ -39,4 +39,17 @@ public interface formatos {
                
     }
     
+    
+    static boolean isNumber(String num){
+        try {
+            double number=Double.parseDouble(num);
+            return true;
+        } catch (Exception e) {
+            System.out.println("No es un numero ");
+        }
+        return false;
+        
+    
+    }
+    
 }

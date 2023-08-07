@@ -4,21 +4,20 @@
  */
 package com.mycompany.sale_point;
 
-
 import java.io.File;
 
 import java.net.URL;
 import java.nio.file.Paths;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 
 import java.util.ResourceBundle;
+import java.util.function.UnaryOperator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 import javafx.collections.ObservableList;
-
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -31,11 +30,11 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Pagination;
 import javafx.scene.control.RadioButton;
 
-
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import javafx.scene.image.Image;
@@ -46,12 +45,14 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.util.converter.IntegerStringConverter;
 
 import models.productModel;
 import servicios.AutoCompleteComboBoxListener;
 
 import servicios.DataBase;
 import servicios.Wait;
+import servicios.formatos;
 import servicios.producto;
 
 /**
@@ -59,7 +60,7 @@ import servicios.producto;
  *
  * @author Diego Carcamo
  */
-public class buscadorProducto implements Initializable, producto {
+public class buscadorProducto implements Initializable, producto, formatos {
 
     @FXML
     private TextField barra_busqueda;
@@ -111,17 +112,15 @@ public class buscadorProducto implements Initializable, producto {
     private boolean estaBuscando = false;
     private Thread hiloBusqueda;
     private Wait espera;
-    
+
     protected AutoCompleteComboBoxListener comboBoxFiltrado;
     protected AutoCompleteComboBoxListener comboBoxFiltrado2;
     Runnable run;
 
-
-
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         initTabla();
-        
+
         espera = new Wait(1, this);
         hiloBusqueda = new Thread(espera);
         modoActual = Modos.CREAR;
@@ -148,13 +147,12 @@ public class buscadorProducto implements Initializable, producto {
             }
         });
         try {
-                 comboBoxFiltrado=new AutoCompleteComboBoxListener<>(tipo_form);
-                 comboBoxFiltrado2=new AutoCompleteComboBoxListener<>(filtros);
+            comboBoxFiltrado = new AutoCompleteComboBoxListener<>(tipo_form);
+            comboBoxFiltrado2 = new AutoCompleteComboBoxListener<>(filtros);
         } catch (Exception e) {
             System.out.println("OCURRIO UN ERROR!!");
             e.printStackTrace();
         }
-   
 
         filtros.setVisible(false);
         activar_filtros.setOnAction((t) -> {
@@ -195,7 +193,24 @@ public class buscadorProducto implements Initializable, producto {
             }
 
         });
- 
+
+        //Formatos de los texFields del formulario
+        UnaryOperator<TextFormatter.Change> integerFilter = change -> {
+            String newText = change.getControlNewText();
+            if (newText.matches("[0-9]*\\.?[0-9]*")) {
+                return change;
+            } else {
+
+            }
+            return null;
+        };
+
+        precio_form.setTextFormatter(
+                new TextFormatter<String>(integerFilter));
+        descuento_form.setTextFormatter(
+                new TextFormatter<String>(integerFilter));
+        
+       
 
     }
 
@@ -335,7 +350,7 @@ public class buscadorProducto implements Initializable, producto {
             while (rs.next()) {
                 //agergamos un estilo a cada MenuItem. (solo aumenta el tamaño
                 //de la letra)
-               
+
                 String nombre = (rs.getString("nombre"));
 
                 filtros.getItems().add(nombre);
@@ -344,7 +359,7 @@ public class buscadorProducto implements Initializable, producto {
             }
             rs.close();
         } catch (SQLException ex) {
-           ex.printStackTrace();
+            ex.printStackTrace();
         }
     }
 

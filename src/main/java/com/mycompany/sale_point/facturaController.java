@@ -89,10 +89,11 @@ public class facturaController implements Initializable, formatos, factura {
         datosFactura.add("Productos" + "\t" + "Subtotales");
 
         for (productModel pm : facturaCliente.getProductos()) {
-
+            String nombre= pm.getNombre();
+            String nuevoDetalle="";
             String productoTotal = formatos.getFormatoLempira(pm.getTotal());
-
-            String nuevoDetalle = pm.getNombre() + "\t\t" + productoTotal;
+     
+            nuevoDetalle = nombre+ "\t\t" + productoTotal;
             //por ahoira no manda a pedir el subtotal esta duncion solo desplega el
             //Total incluyendo el desceunto del producto;
             subtotal += pm.getSubtotal();
