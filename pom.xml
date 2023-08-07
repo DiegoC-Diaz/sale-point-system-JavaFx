@@ -13,8 +13,7 @@
         <javafx.maven.plugin.version>0.0.8</javafx.maven.plugin.version>
     </properties>
     <dependencies>
-  
-    
+
         <!-- https://mvnrepository.com/artifact/com.mysql/mysql-connector-j -->
         <dependency>
             <groupId>com.mysql</groupId>
@@ -41,6 +40,8 @@
           
             <version>20.0.1</version>
         </dependency>
+       
+
 
  
     </dependencies>
@@ -48,6 +49,8 @@
 
     <build>
         <plugins>
+            
+            
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>

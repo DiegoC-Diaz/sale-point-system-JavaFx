@@ -11,12 +11,12 @@ package com.mycompany.sale_point;
  */
 public class main {
     
-    
+  
     public static void main(String[] args){
         App.main(args);
         
         
-    
+        
     
     }
 

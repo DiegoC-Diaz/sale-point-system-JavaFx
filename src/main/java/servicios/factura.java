@@ -4,8 +4,11 @@
  */
 package servicios;
 
+import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,17 +24,18 @@ public interface factura {
 
     static void crearFactura(DataBase db, facturaModel factura, ObservableList<productModel> detalles) {
         String facturaUUID = UUID.randomUUID().toString();
-        PreparedStatement stmt = db.getPreparedStatement("INSERT INTO `tiendas_bethel`.`factura`\n"
-                + "(`id_factura`,\n"
-                + "`descuento`,\n"
-                + "`total`,`consumidor`,`fecha`)\n"
-                + "VALUES\n"
-                + "(?,\n"
-                + "?,\n"
-                + "?,?,NOW());");
 
-        PreparedStatement stmt2 = db.getPreparedStatement("call tiendas_bethel.agregarDetalles(?, ?, ?, ?, ?);");
+        CallableStatement stmt2;
+        CallableStatement stmt;
+        LocalDateTime currentDateTime = LocalDateTime.now();
+
+        // Create a Timestamp object from the current LocalDateTime
+        Timestamp timestamp = Timestamp.valueOf(currentDateTime);
+
         try {
+
+            stmt = db.getCon().prepareCall("{CALL crear_factura_p(?,?,?,?,?)}");
+            stmt2 = db.getCon().prepareCall("{CALL agregarDetalles(?, ?, ?, ?, ?,?)}");
             /*El AutoCommit viene activado por defecto, este permite
             que los queries se ejecuten tras que esten listos.Osea si tenemos dos
             queries se ejecutaran tras estar listos y no todos a la vez.
@@ -43,7 +47,9 @@ public interface factura {
             stmt.setString(1, facturaUUID);
             stmt.setDouble(2, factura.getDescuento());
             stmt.setDouble(3, factura.getTotal());
-            stmt.setString(4, factura.getConsumidor());
+            stmt.setTimestamp(4, timestamp);
+            stmt.setString(5, factura.getConsumidor());
+
             stmt.execute();
 
             int counter = 1;
@@ -53,7 +59,8 @@ public interface factura {
                 stmt2.setInt(2, counter);
                 stmt2.setString(3, p.getId());
                 stmt2.setDouble(4, p.getCantidad());
-                stmt2.setDouble(5, p.getTotal());
+                stmt2.setDouble(5, p.getSubtotal());
+                stmt2.setDouble(6, p.getTotal());
 
                 stmt2.addBatch();
                 counter++;

@@ -1,0 +1,22 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Jul 14, 2023, 12:57:46 AM
+    Author     : Diego Carcamo
+*/
+
+
+.button {
+    -fx-background-color: transparent;
+}
+
+
+.svg-path {
+    -fx-fill: gray; /* Default fill color */
+}
+
+.button:hover>.svg-path{
+    -fx-fill: black; /* Default fill color */
+}
