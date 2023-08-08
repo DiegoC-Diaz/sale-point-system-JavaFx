@@ -34,7 +34,7 @@ public interface producto {
                 + "    `producto`.`descuento`,\n"
                 + "    `producto`.`estado`,\n"
                 + "`tipo`\n"
-                + "FROM `tiendas_bethel`.`producto` where producto.id_producto =?;");
+                + "FROM `producto` where producto.id_producto =?;");
 
         try {
             System.out.println("EJECUTNANDO get_Producto_ID\n");
@@ -58,7 +58,7 @@ public interface producto {
         // Create a Timestamp object from the current LocalDateTime
         Timestamp timestamp = Timestamp.valueOf(currentDateTime);
         System.out.println("EJECUTNANDO actualizarProducto()\n");
-        PreparedStatement stm = database.getPreparedStatement("UPDATE `tiendas_bethel`.`producto`\n"
+        PreparedStatement stm = database.getPreparedStatement("UPDATE `producto`\n"
                 + "SET\n"
                 + "`nombre` = ?,\n"
                 + "`descripcion` =?,\n"
@@ -137,7 +137,7 @@ public interface producto {
 
     static ResultSet getTipos(DataBase database) {
 
-        PreparedStatement stm = database.getPreparedStatement("SELECT nombre FROM tiendas_bethel.tipo;");
+        PreparedStatement stm = database.getPreparedStatement("SELECT nombre FROM tipo;");
         System.out.println("EJECUTNANDO getTipos\n");
 
         try {
@@ -186,9 +186,9 @@ public interface producto {
 
     }
 
-    public static ResultSet buscar_productos(DataBase database, String nombre,String tipo, Pagination pag) {
+    public static ResultSet buscar_productos(DataBase database, String nombre, String tipo, Pagination pag) {
 
-        ResultSet rs = buscar_productos(database, nombre,tipo, pag.getCurrentPageIndex());
+        ResultSet rs = buscar_productos(database, nombre, tipo, pag.getCurrentPageIndex());
         //Se esta ejecutando dos veces
         indexar(database, nombre, pag);
 
@@ -197,7 +197,7 @@ public interface producto {
     }
 
     //funcion principal
-     static ResultSet buscar_productos(DataBase database, String nombre, int offset) {
+    static ResultSet buscar_productos(DataBase database, String nombre, int offset) {
 
         try {
             System.out.println("EJECUTNANDO buscarProductos OFFSET\n");
@@ -219,7 +219,7 @@ public interface producto {
     }
 
     //busqeuda por tipo
-     static ResultSet buscar_productos(DataBase database, String nombre, String tipo, int offset) {
+    static ResultSet buscar_productos(DataBase database, String nombre, String tipo, int offset) {
 
         try {
             System.out.println("EJECUTNANDO buscarProductos OFFSET\n");

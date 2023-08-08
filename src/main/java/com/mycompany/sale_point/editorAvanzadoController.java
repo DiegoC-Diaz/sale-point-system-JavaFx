@@ -4,6 +4,8 @@
  */
 package com.mycompany.sale_point;
 
+import java.net.URL;
+import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
@@ -22,12 +24,13 @@ enum Modos {
 
 public class editorAvanzadoController extends buscadorProducto implements Initializable, producto {
 
-  
-
-    public editorAvanzadoController() {
-        super();
-
+  @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        super.initialize(url, rb);
+    
     }
+
+  
     
 
 }

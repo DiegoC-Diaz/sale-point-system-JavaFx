@@ -153,7 +153,7 @@ public class DataBase {
                 + "    `producto`.`descuento`,\n"
                 + " `producto`.`estado`,\n"
                 + "`tipo`\n"
-                + "FROM `tiendas_bethel`.`producto` limit 100;");
+                + "FROM `producto` limit 100;");
         //Agregaremos paginacion 
         try {
             //campos:

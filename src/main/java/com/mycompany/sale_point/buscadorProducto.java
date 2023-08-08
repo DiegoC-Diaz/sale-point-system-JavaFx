@@ -199,9 +199,7 @@ public class buscadorProducto implements Initializable, producto, formatos {
             String newText = change.getControlNewText();
             if (newText.matches("[0-9]*\\.?[0-9]*")) {
                 return change;
-            } else {
-
-            }
+            } 
             return null;
         };
 
